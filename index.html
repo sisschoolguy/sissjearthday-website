@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <!-- The viewport meta tag ensures proper rendering on mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Earth Day</title>
 
   <!-- Original fonts plus pixelated font for game text -->
@@ -15,13 +16,13 @@
   <style>
     /* General Styles */
     * {
-      margin: 0; 
-      padding: 0; 
-      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
     body {
       font-family: 'Montserrat', sans-serif;
-      line-height: 1.6; 
+      line-height: 1.6;
       color: #333;
     }
     h1, h2, h3 {
@@ -31,239 +32,244 @@
     /* Full-screen Pop-up */
     .popup {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100vh;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
       background-color: #c8e6c9;
-      display: flex; 
-      justify-content: center; 
+      display: flex;
+      justify-content: center;
       align-items: center;
-      transition: all 0.5s ease; 
+      transition: all 0.5s ease;
       z-index: 1000;
     }
-    .popup-content { 
-      text-align: center; 
-      max-width: 80%; 
+    .popup-content {
+      text-align: center;
+      max-width: 80%;
     }
     .popup h1 {
-      font-size: 4rem; 
-      margin-bottom: 1rem; 
+      font-size: 4rem;
+      margin-bottom: 1rem;
     }
     .popup p {
-      font-size: 1.2rem; 
-      margin-bottom: 2rem; 
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
     }
     .buttons button {
-      background: none; 
-      border: none; 
-      font-size: 1.2rem; 
-      margin: 0 1rem; 
-      cursor: pointer; 
-      color: #333; 
-      transition: opacity 0.3s ease; 
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      margin: 0 1rem;
+      cursor: pointer;
+      color: #333;
+      transition: opacity 0.3s ease;
     }
-    .buttons button:hover { 
-      opacity: 0.7; 
+    .buttons button:hover {
+      opacity: 0.7;
     }
-    .arrow-down, .arrow-up {
-      font-size: 2rem; 
-      cursor: pointer; 
-      position: absolute; 
-      bottom: 20px; 
-      left: 50%; 
-      transform: translateX(-50%); 
+    .arrow-down,
+    .arrow-up {
+      font-size: 2rem;
+      cursor: pointer;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     /* Minimized Top Navigation Bar */
     .navbar {
-      position: fixed; 
-      top: -100px; 
-      left: 0; 
+      position: fixed;
+      top: -100px;
+      left: 0;
       width: 100%;
-      background-color: #c8e6c9; 
-      display: flex; 
+      background-color: #c8e6c9;
+      display: flex;
       align-items: center;
-      padding: 1rem 2rem; 
-      transition: top 0.5s ease; 
+      padding: 1rem 2rem;
+      transition: top 0.5s ease;
       z-index: 999;
     }
     .navbar .buttons {
-      display: flex; 
-      gap: 1rem; 
+      display: flex;
+      gap: 1rem;
       margin-right: auto;
     }
     .navbar h1 {
-      font-size: 1.5rem; 
+      font-size: 1.5rem;
       margin-left: auto;
     }
     .arrow-up {
-      font-size: 1.5rem; 
-      cursor: pointer; 
+      font-size: 1.5rem;
+      cursor: pointer;
       margin-right: 1rem;
     }
 
     /* Page Sections */
     .section {
       padding: 6rem 2rem 2rem;
-      min-height: 100vh; 
+      min-height: 100vh;
       display: flex;
-      flex-direction: column; 
+      flex-direction: column;
       align-items: center;
     }
 
-    /* Information Section with updated text and floated image */
-    #information { 
-      background-color: #f5f5f5; 
+    /* Information Section with updated text and image placement */
+    #information {
+      background-color: #f5f5f5;
     }
     .info-content {
       width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
     }
-    .info-content img {
-      float: right;
-      margin: 0 0 10px 10px;
-      max-width: 300px;
-      height: auto;
-      object-fit: contain;
-    }
-    .info-content p {
+    .info-text p {
       margin-bottom: 1rem;
       text-align: justify;
     }
+    .info-text img {
+      display: block;
+      margin: 50px auto 10px auto; /* 50px top margin to push the image below the first paragraph */
+      max-width: 350px; /* Slightly larger image */
+      height: auto;
+      object-fit: contain;
+    }
 
     /* Game Section (Only one game remains) */
-    #games { 
-      background-color: #e0e0e0; 
+    #games {
+      background-color: #e0e0e0;
     }
-    #games h2 { 
-      margin-bottom: 20px; 
+    #games h2 {
+      margin-bottom: 20px;
     }
     .games-container {
-      display: flex; 
-      gap: 80px; 
+      display: flex;
+      gap: 80px;
       justify-content: flex-start;
       flex-wrap: nowrap;
       margin-top: 40px;
       align-items: center;
     }
     .game-wrapper {
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: 10px;
     }
 
     /* Earth Defender Container */
     #gameContainer2 {
-      position: relative; 
-      overflow: hidden; 
-      border: 2px solid #333; 
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #333;
       background-color: #000;
-      width: 500px; 
+      width: 500px;
       height: 400px;
     }
 
     /* Fullscreen Game Popup */
     .fullscreen-game {
-      position: fixed; 
-      top: 0; 
+      position: fixed;
+      top: 0;
       left: 0;
-      width: 100%; 
+      width: 100%;
       height: 100%;
       background-color: rgba(0,0,0,0.9);
-      display: flex; 
-      justify-content: center; 
+      display: flex;
+      justify-content: center;
       align-items: center;
-      z-index: 2000; 
+      z-index: 2000;
       display: none;
     }
     .fullscreen-game-content {
       position: relative;
-      display: flex; 
-      justify-content: center; 
+      display: flex;
+      justify-content: center;
       align-items: center;
     }
     .close-fullscreen {
-      position: absolute; 
-      top: 20px; 
-      right: 20px; 
-      color: white; 
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
       font-size: 30px;
-      cursor: pointer; 
+      cursor: pointer;
       z-index: 2001;
     }
 
     /* Fullscreen Button */
     .fullscreen-btn {
-      background-color: #2e7d32; 
-      color: white; 
-      border: none; 
+      background-color: #2e7d32;
+      color: white;
+      border: none;
       padding: 8px 16px;
-      border-radius: 4px; 
-      cursor: pointer; 
-      font-size: 14px; 
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
       transition: background-color 0.3s;
     }
-    .fullscreen-btn:hover { 
-      background-color: #1b5e20; 
+    .fullscreen-btn:hover {
+      background-color: #1b5e20;
     }
 
     /* Game Instructions Popup */
     .game-instructions {
-      position: absolute; 
-      top: 0; 
-      left: 0; 
-      width: 100%; 
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
       height: 100%;
       background-color: rgba(200, 230, 201, 0.95);
-      display: flex; 
-      flex-direction: column; 
-      justify-content: center; 
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      text-align: center; 
-      padding: 20px; 
-      box-sizing: border-box; 
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
       z-index: 10;
     }
-    .game-instructions h2 { 
-      margin-bottom: 1rem; 
-      color: #2e7d32; 
-      font-size: 1.5rem; 
+    .game-instructions h2 {
+      margin-bottom: 1rem;
+      color: #2e7d32;
+      font-size: 1.5rem;
     }
-    .game-instructions p { 
-      margin-bottom: 1rem; 
-      line-height: 1.6; 
-      font-size: 1rem; 
+    .game-instructions p {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      font-size: 1rem;
     }
     .start-game-btn {
-      background-color: #2e7d32; 
-      color: white; 
-      border: none; 
+      background-color: #2e7d32;
+      color: white;
+      border: none;
       padding: 10px 25px;
-      font-size: 1rem; 
-      border-radius: 5px; 
-      cursor: pointer; 
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
       margin-top: 1rem;
       transition: background-color 0.3s;
     }
-    .start-game-btn:hover { 
-      background-color: #1b5e20; 
+    .start-game-btn:hover {
+      background-color: #1b5e20;
     }
 
     /* Earth Defender Game Styles */
     #earthDefenderHealthBar {
-      position: absolute; 
-      top: 10px; 
+      position: absolute;
+      top: 10px;
       right: 10px;
-      width: 150px; 
+      width: 150px;
       height: 20px;
-      background-color: #333; 
+      background-color: #333;
       border-radius: 10px;
-      overflow: hidden; 
+      overflow: hidden;
       z-index: 5;
     }
     #earthDefenderHealthFill {
-      height: 100%; 
+      height: 100%;
       width: 100%;
-      background-color: #2ecc71; 
+      background-color: #2ecc71;
       transition: width 0.3s;
     }
 
@@ -277,57 +283,57 @@
       z-index: 5;
     }
     #earthDefenderHealthText {
-      top: 12px; 
+      top: 12px;
       right: 170px;
     }
     #earthDefenderAmmoDisplay {
-      top: 10px; 
+      top: 10px;
       left: 10px;
     }
     #earthDefenderGameOver {
-      position: absolute; 
-      top: 50%; 
+      position: absolute;
+      top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: white; 
-      font-size: 24px; 
+      color: white;
+      font-size: 24px;
       text-align: center;
-      display: none; 
+      display: none;
       z-index: 10;
     }
     #earthDefenderRestartBtn {
-      margin-top: 15px; 
-      padding: 8px 16px; 
+      margin-top: 15px;
+      padding: 8px 16px;
       font-size: 16px;
-      background-color: #2ecc71; 
-      border: none; 
-      border-radius: 5px; 
+      background-color: #2ecc71;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
     }
     #earthDefenderRulesPopup {
-      position: absolute; 
-      top: 0; 
+      position: absolute;
+      top: 0;
       left: 0;
-      width: 100%; 
+      width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.8);
       color: white;
-      display: flex; 
-      flex-direction: column; 
-      justify-content: center; 
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      text-align: center; 
-      padding: 20px; 
+      text-align: center;
+      padding: 20px;
       box-sizing: border-box;
       z-index: 15;
     }
     #earthDefenderStartBtn {
-      margin-top: 15px; 
-      padding: 8px 24px; 
+      margin-top: 15px;
+      padding: 8px 24px;
       font-size: 16px;
-      background-color: #2ecc71; 
-      border: none; 
-      border-radius: 5px; 
+      background-color: #2ecc71;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
     }
 
@@ -351,6 +357,21 @@
       color: #333;
       padding: 10px 0;
       margin-top: 20px;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 600px) {
+      .info-content {
+        padding: 10px;
+      }
+      .games-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      #gameContainer2 {
+        width: 90vw;
+        height: auto;
+      }
     }
   </style>
 </head>
@@ -388,14 +409,15 @@
   <section id="information" class="section">
     <h2>Information</h2>
     <div class="info-content">
-      <img 
-        src="https://sissjearthday.tiiny.site/earth_day_cleaner.png" 
-        alt="Earth Day Cleaner"
-      >
-      <div>
+      <div class="info-text">
         <p>
           Earth Day is celebrated on the 22nd of April every year around the globe to propagate awareness about environmental degradation and make it easier for activities to rescue our planet. Earth Day was initially celebrated in 1970 and gave rise to the current-day environmental movement. United States Senator Gaylord Nelson initiated Earth Day with a focus on bringing environmental pollution and degradation to the forefront.
         </p>
+        <!-- The image is placed after the first paragraph -->
+        <img 
+          src="https://sissjearthday.tiiny.site/earth_day_cleaner.png" 
+          alt="Earth Day Cleaner"
+        >
         <p>
           Earth Day is today a global movement, with more than 1 billion people getting involved every year by planting trees, picking up trash, encouraging recycling, reducing plastic consumption, and pushing for climate policy.
         </p>
@@ -747,7 +769,7 @@
           const projectile = projectiles[i];
           projectile.x += Math.cos(projectile.angle) * projectile.speed;
           projectile.y += Math.sin(projectile.angle) * projectile.speed;
-          if (projectile.x < 0 || projectile.x > canvas.width || 
+          if (projectile.x < 0 || projectile.x > canvas.width ||
               projectile.y < 0 || projectile.y > canvas.height) {
             projectiles.splice(i, 1);
             continue;
