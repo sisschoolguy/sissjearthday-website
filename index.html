@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Ensure proper mobile rendering -->
+  <!-- The viewport meta tag ensures proper rendering on mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Earth Day</title>
 
-  <!-- Fonts -->
+  <!-- Original fonts plus pixelated font for game text -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
@@ -15,189 +15,338 @@
 
   <style>
     /* General Styles */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Montserrat', sans-serif; line-height: 1.6; color: #333; }
-    h1, h2, h3 { font-weight: 700; }
-
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    h1, h2, h3 {
+      font-weight: 700;
+    }
     /* Full-screen Pop-up */
     .popup {
-      position: fixed; top: 0; left: 0;
+      position: fixed;
+      top: 0; left: 0;
       width: 100%; height: 100vh;
       background-color: #c8e6c9;
-      display: flex; justify-content: center; align-items: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       transition: all 0.5s ease;
       z-index: 1000;
     }
-    .popup-content { text-align: center; max-width: 80%; }
-    .popup h1 { font-size: 4rem; margin-bottom: 1rem; }
-    .popup p { font-size: 1.2rem; margin-bottom: 2rem; }
+    .popup-content {
+      text-align: center;
+      max-width: 80%;
+    }
+    .popup h1 {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+    .popup p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
     .buttons button {
-      background: none; border: none; font-size: 1.2rem;
-      margin: 0 1rem; cursor: pointer; color: #333;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      margin: 0 1rem;
+      cursor: pointer;
+      color: #333;
       transition: opacity 0.3s ease;
     }
-    .buttons button:hover { opacity: 0.7; }
-    .arrow-down, .arrow-up {
-      font-size: 2rem; cursor: pointer;
-      position: absolute; bottom: 20px; left: 50%;
+    .buttons button:hover {
+      opacity: 0.7;
+    }
+    .arrow-down,
+    .arrow-up {
+      font-size: 2rem;
+      cursor: pointer;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
       transform: translateX(-50%);
     }
-
     /* Navbar */
     .navbar {
-      position: fixed; top: -100px; left: 0; width: 100%;
-      background-color: #c8e6c9; display: flex; align-items: center;
-      padding: 1rem 2rem; transition: top 0.5s ease; z-index: 999;
+      position: fixed;
+      top: -100px;
+      left: 0;
+      width: 100%;
+      background-color: #c8e6c9;
+      display: flex;
+      align-items: center;
+      padding: 1rem 2rem;
+      transition: top 0.5s ease;
+      z-index: 999;
     }
-    .navbar .buttons { display: flex; gap: 1rem; margin-right: auto; }
-    .navbar h1 { font-size: 1.5rem; margin-left: auto; }
-    .arrow-up { font-size: 1.5rem; cursor: pointer; margin-right: 1rem; }
-
+    .navbar .buttons {
+      display: flex;
+      gap: 1rem;
+      margin-right: auto;
+    }
+    .navbar h1 {
+      font-size: 1.5rem;
+      margin-left: auto;
+    }
+    .arrow-up {
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-right: 1rem;
+    }
     /* Page Sections */
     .section {
       padding: 6rem 2rem 2rem;
-      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-
-    /* Information Section (text wrapping around image) */
-    #information { background-color: #f5f5f5; }
-    .info-content { width: 100%; max-width: 900px; margin: 0 auto; }
-    .info-text p { margin-bottom: 1rem; text-align: justify; }
+    /* Information Section with text wrapping around image */
+    #information {
+      background-color: #f5f5f5;
+    }
+    .info-content {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .info-text p {
+      margin-bottom: 1rem;
+      text-align: justify;
+    }
     .info-text img {
       display: block;
-      margin: 50px auto 10px auto; /* Appears after first paragraph; adjust 50px to lower it */
-      max-width: 350px; height: auto; object-fit: contain;
+      margin: 50px auto 10px auto; /* Image appears after first paragraph, pushed lower */
+      max-width: 350px;
+      height: auto;
+      object-fit: contain;
     }
-
     /* Game Section */
-    #games { background-color: #e0e0e0; }
-    #games h2 { margin-bottom: 20px; }
-    .games-container {
-      display: flex; gap: 80px; justify-content: flex-start;
-      flex-wrap: nowrap; margin-top: 40px; align-items: center;
+    #games {
+      background-color: #e0e0e0;
     }
-    .game-wrapper { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-
+    #games h2 {
+      margin-bottom: 20px;
+    }
+    .games-container {
+      display: flex;
+      gap: 80px;
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      margin-top: 40px;
+      align-items: center;
+    }
+    .game-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
     /* Earth Defender Container */
     #gameContainer2 {
-      position: relative; overflow: hidden;
-      border: 2px solid #333; background-color: #000;
-      width: 500px; height: 400px;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #333;
+      background-color: #000;
+      width: 500px;
+      height: 400px;
     }
-
     /* Fullscreen Game Popup */
     .fullscreen-game {
-      position: fixed; top: 0; left: 0;
+      position: fixed;
+      top: 0; left: 0;
       width: 100%; height: 100%;
       background-color: rgba(0,0,0,0.9);
-      display: flex; justify-content: center; align-items: center;
-      z-index: 2000; display: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      display: none;
     }
     .fullscreen-game-content {
       position: relative;
-      display: flex; justify-content: center; align-items: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .close-fullscreen {
-      position: absolute; top: 20px; right: 20px;
-      color: white; font-size: 30px; cursor: pointer; z-index: 2001;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+      z-index: 2001;
     }
-
     /* Fullscreen Button */
     .fullscreen-btn {
-      background-color: #2e7d32; color: white;
-      border: none; padding: 8px 16px; border-radius: 4px;
-      cursor: pointer; font-size: 14px; transition: background-color 0.3s;
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
     }
-    .fullscreen-btn:hover { background-color: #1b5e20; }
-
+    .fullscreen-btn:hover {
+      background-color: #1b5e20;
+    }
     /* Game Instructions Popup */
     .game-instructions {
-      position: absolute; top: 0; left: 0;
+      position: absolute;
+      top: 0; left: 0;
       width: 100%; height: 100%;
       background-color: rgba(200, 230, 201, 0.95);
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      text-align: center; padding: 20px;
-      box-sizing: border-box; z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 10;
     }
     .game-instructions h2 {
-      margin-bottom: 1rem; color: #2e7d32; font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #2e7d32;
+      font-size: 1.5rem;
     }
     .game-instructions p {
-      margin-bottom: 1rem; line-height: 1.6; font-size: 1rem;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      font-size: 1rem;
     }
     .start-game-btn {
-      background-color: #2e7d32; color: white; border: none;
-      padding: 10px 25px; font-size: 1rem; border-radius: 5px;
-      cursor: pointer; margin-top: 1rem; transition: background-color 0.3s;
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: background-color 0.3s;
     }
-    .start-game-btn:hover { background-color: #1b5e20; }
-
+    .start-game-btn:hover {
+      background-color: #1b5e20;
+    }
     /* Earth Defender Game Styles */
     #earthDefenderHealthBar {
-      position: absolute; top: 10px; right: 10px;
-      width: 150px; height: 20px;
-      background-color: #333; border-radius: 10px;
-      overflow: hidden; z-index: 5;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 150px;
+      height: 20px;
+      background-color: #333;
+      border-radius: 10px;
+      overflow: hidden;
+      z-index: 5;
     }
     #earthDefenderHealthFill {
-      height: 100%; width: 100%;
+      height: 100%;
+      width: 100%;
       background-color: #2ecc71;
       transition: width 0.3s;
     }
     /* Pixelated style for health and ammo text */
     #earthDefenderHealthText,
     #earthDefenderAmmoDisplay {
-      position: absolute; color: white;
+      position: absolute;
+      color: white;
       font-family: 'Press Start 2P', monospace;
-      font-size: 10px; z-index: 5;
+      font-size: 10px;
+      z-index: 5;
     }
-    #earthDefenderHealthText { top: 12px; right: 170px; }
-    #earthDefenderAmmoDisplay { top: 10px; left: 10px; }
+    #earthDefenderHealthText {
+      top: 12px;
+      right: 170px;
+    }
+    #earthDefenderAmmoDisplay {
+      top: 10px;
+      left: 10px;
+    }
     #earthDefenderGameOver {
-      position: absolute; top: 50%; left: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
-      color: white; font-size: 24px; text-align: center;
-      display: none; z-index: 10;
+      color: white;
+      font-size: 24px;
+      text-align: center;
+      display: none;
+      z-index: 10;
     }
     #earthDefenderRestartBtn {
-      margin-top: 15px; padding: 8px 16px;
-      font-size: 16px; background-color: #2ecc71;
-      border: none; border-radius: 5px; cursor: pointer;
+      margin-top: 15px;
+      padding: 8px 16px;
+      font-size: 16px;
+      background-color: #2ecc71;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
     #earthDefenderRulesPopup {
-      position: absolute; top: 0; left: 0;
+      position: absolute;
+      top: 0; left: 0;
       width: 100%; height: 100%;
       background-color: rgba(0, 0, 0, 0.8);
       color: white;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      text-align: center; padding: 20px;
-      box-sizing: border-box; z-index: 15;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 15;
     }
     #earthDefenderStartBtn {
-      margin-top: 15px; padding: 8px 24px;
-      font-size: 16px; background-color: #2ecc71;
-      border: none; border-radius: 5px; cursor: pointer;
+      margin-top: 15px;
+      padding: 8px 24px;
+      font-size: 16px;
+      background-color: #2ecc71;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
-    /* Rules panel on the right side */
+    /* Rules text on the right side */
     .game-rules {
-      max-width: 300px; line-height: 1.6;
+      max-width: 300px;
+      line-height: 1.6;
       font-family: 'Montserrat', sans-serif;
       font-size: 14px;
-      color: #000; background: none; border: none; padding: 0;
+      color: #000;
+      background: none;
+      border: none;
+      padding: 0;
     }
     /* Footer styling */
     footer {
-      width: 100%; text-align: center;
-      font-size: 10px; color: #333;
-      padding: 10px 0; margin-top: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 10px;
+      color: #333;
+      padding: 10px 0;
+      margin-top: 20px;
     }
-    /* Mobile Responsiveness */
+    /* Mobile responsiveness */
     @media (max-width: 600px) {
-      .info-content { padding: 10px; }
-      .games-container { flex-direction: column; align-items: center; }
-      /* Non-fullscreen mode on mobile: use a smaller game container */
+      .info-content {
+        padding: 10px;
+      }
+      .games-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      /* Non-fullscreen mode on mobile: Use smaller game container */
       #gameContainer2 {
         width: 300px;
         height: 240px;
@@ -243,7 +392,7 @@
         <p>
           Earth Day is celebrated on the 22nd of April every year around the globe to propagate awareness about environmental degradation and make it easier for activities to rescue our planet. Earth Day was initially celebrated in 1970 and gave rise to the current-day environmental movement. United States Senator Gaylord Nelson initiated Earth Day with a focus on bringing environmental pollution and degradation to the forefront.
         </p>
-        <!-- Place image after first paragraph -->
+        <!-- Image placed after the first paragraph -->
         <img src="https://sissjearthday.tiiny.site/earth_day_cleaner.png" alt="Earth Day Cleaner">
         <p>
           Earth Day is today a global movement, with more than 1 billion people getting involved every year by planting trees, picking up trash, encouraging recycling, reducing plastic consumption, and pushing for climate policy.
@@ -306,18 +455,18 @@
   </footer>
 
   <script>
-    // Global fullscreen state and placeholders
+    // Global variables for fullscreen state and placeholders
     let currentFullscreenGame = null;
     const originalParents = {};
     const originalPlaceholders = {};
 
-    // Smooth scrolling
+    // Smooth scrolling function
     function scrollToSection(sectionId) {
       const section = document.getElementById(sectionId);
       section.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Popup and Navbar events
+    // Popup and Navbar functionality
     const popup = document.getElementById('popup');
     const navbar = document.getElementById('navbar');
     const closePopupBtn = document.getElementById('closePopup');
@@ -348,13 +497,14 @@
     });
     gamesNavBtn.addEventListener('click', () => { scrollToSection('games'); });
 
-    // Fullscreen button functionality
+    // Fullscreen button functionality – redoing mobile fullscreen behavior
     const fullscreenButtons = document.querySelectorAll('.fullscreen-btn');
     fullscreenButtons.forEach(button => {
       button.addEventListener('click', function() {
         const gameNumber = this.getAttribute('data-game');
         if (gameNumber === '2') {
           const gameContainer = document.getElementById('gameContainer2');
+          // Store original parent and placeholder if not done.
           if (!originalParents[gameNumber]) {
             originalParents[gameNumber] = gameContainer.parentElement;
             const placeholder = document.createElement('div');
@@ -362,35 +512,48 @@
             originalParents[gameNumber].insertBefore(placeholder, gameContainer);
             originalPlaceholders[gameNumber] = placeholder;
           }
+          // Save original inline styles.
           gameContainer.dataset.originalWidth = gameContainer.style.width;
           gameContainer.dataset.originalHeight = gameContainer.style.height;
           
           if (window.innerWidth <= 600) {
-            // Mobile fullscreen: fill entire viewport
+            // For mobile, keep the container size the same as non-fullscreen (300px x 240px)
+            gameContainer.style.width = '300px';
+            gameContainer.style.height = '240px';
+            // Remove any previous transform
             gameContainer.style.transform = '';
-            gameContainer.style.width = window.innerWidth + "px";
-            gameContainer.style.height = window.innerHeight + "px";
-            // Update canvas resolution to match new container size:
-            const edCanvas = document.getElementById('earthDefenderCanvas');
-            edCanvas.width = window.innerWidth;
-            edCanvas.height = window.innerHeight;
+            // Then, in fullscreen mode, make the container centered with no additional scaling.
+            document.getElementById('fullscreenGameContent').style.width = '300px';
+            document.getElementById('fullscreenGameContent').style.height = '240px';
           } else {
-            // Desktop fullscreen: as before
+            // On larger screens, use existing desktop full-screen sizing.
             gameContainer.style.transform = '';
             gameContainer.style.width = '90vmin';
             gameContainer.style.height = '72vmin';
           }
+          
           gameContainer.style.display = 'block';
           gameContainer.style.margin = 'auto';
+          // Move the container to the fullscreen overlay.
           const fullscreenGame = document.getElementById('fullscreenGame');
           const fullscreenGameContent = document.getElementById('fullscreenGameContent');
           fullscreenGameContent.innerHTML = '';
           fullscreenGameContent.appendChild(gameContainer);
           fullscreenGame.style.display = 'flex';
           currentFullscreenGame = gameNumber;
-          // Re-center Earth after resizing canvas:
+          // For desktop only: update canvas resolution.
+          if (window.innerWidth > 600) {
+            const edCanvas = document.getElementById('earthDefenderCanvas');
+            if (edCanvas) {
+              edCanvas.width = gameContainer.offsetWidth;
+              edCanvas.height = gameContainer.offsetHeight;
+              edCanvas.style.display = 'block';
+              edCanvas.style.margin = '0 auto';
+            }
+          }
+          // Re-center the Earth.
           const edCanvas = document.getElementById('earthDefenderCanvas');
-          if (edCanvas) {
+          if (typeof earth !== 'undefined' && edCanvas) {
             earth.x = edCanvas.width / 2;
             earth.y = edCanvas.height / 2;
           }
@@ -398,12 +561,11 @@
       });
     });
 
-    // Close fullscreen – restore original container
+    // Close fullscreen – return container to its original location.
     const closeFullscreen = document.getElementById('closeFullscreen');
     closeFullscreen.addEventListener('click', () => {
       if (currentFullscreenGame) {
         const gameContainer = document.getElementById('gameContainer2');
-        // Restore original dimensions
         gameContainer.style.width = gameContainer.dataset.originalWidth || '500px';
         gameContainer.style.height = gameContainer.dataset.originalHeight || '400px';
         gameContainer.style.margin = '';
@@ -425,8 +587,9 @@
     document.addEventListener('DOMContentLoaded', function() {
       const canvas = document.getElementById('earthDefenderCanvas');
       const ctx = canvas.getContext('2d');
+      // Disable image smoothing for a crisp pixelated look.
       ctx.imageSmoothingEnabled = false;
-      // Set canvas resolution based on device
+      // Set canvas resolution conditionally.
       if (window.innerWidth <= 600) {
         canvas.width = 300;
         canvas.height = 240;
@@ -455,7 +618,7 @@
       let mouseY = 0;
       let stars = [];
 
-      // Load images
+      // Load images.
       const earthImg = new Image();
       earthImg.src = "https://sissjearthday.tiiny.site/earth_day_earth.png";
       const arrowImg = new Image();
@@ -653,14 +816,14 @@
           // Draw the Earth.
           ctx.drawImage(earthImg, earth.x - earth.radius, earth.y - earth.radius, earth.radius * 2, earth.radius * 2);
           
-          // Draw the arrow.
+          // Draw the arrow (pointer) flipped by 90°.
           ctx.save();
           ctx.translate(arrow.x, arrow.y);
           ctx.rotate(arrow.rotation + Math.PI/2);
-          ctx.drawImage(arrowImg, -arrow.size / 2, -arrow.size / 2, arrow.size, arrow.size);
+          ctx.drawImage(arrowImg, -arrow.size/2, -arrow.size/2, arrow.size, arrow.size);
           ctx.restore();
           
-          // Draw each projectile.
+          // Draw projectiles.
           for (const projectile of projectiles) {
             ctx.drawImage(bulletImg, projectile.x - projectile.size, projectile.y - projectile.size, projectile.size * 2, projectile.size * 2);
           }
