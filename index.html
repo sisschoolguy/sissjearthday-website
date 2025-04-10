@@ -28,7 +28,6 @@
     h1, h2, h3 {
       font-weight: 700;
     }
-
     /* Full-screen Pop-up */
     .popup {
       position: fixed;
@@ -74,7 +73,6 @@
       left: 50%;
       transform: translateX(-50%);
     }
-
     /* Minimized Top Navigation Bar */
     .navbar {
       position: fixed;
@@ -102,7 +100,6 @@
       cursor: pointer;
       margin-right: 1rem;
     }
-
     /* Page Sections */
     .section {
       padding: 6rem 2rem 2rem;
@@ -111,8 +108,7 @@
       flex-direction: column;
       align-items: center;
     }
-
-    /* Information Section with updated text and image placement */
+    /* Information Section with text wrapping around image */
     #information {
       background-color: #f5f5f5;
     }
@@ -127,13 +123,12 @@
     }
     .info-text img {
       display: block;
-      margin: 50px auto 10px auto; /* Image appears after first paragraph */
+      margin: 50px auto 10px auto; /* 50px top margin to push it lower (under the first paragraph) */
       max-width: 350px;
       height: auto;
       object-fit: contain;
     }
-
-    /* Game Section (Only one game remains) */
+    /* Game Section */
     #games {
       background-color: #e0e0e0;
     }
@@ -154,7 +149,6 @@
       align-items: center;
       gap: 10px;
     }
-
     /* Earth Defender Container */
     #gameContainer2 {
       position: relative;
@@ -164,7 +158,6 @@
       width: 500px;
       height: 400px;
     }
-
     /* Fullscreen Game Popup */
     .fullscreen-game {
       position: fixed;
@@ -192,7 +185,6 @@
       cursor: pointer;
       z-index: 2001;
     }
-
     /* Fullscreen Button */
     .fullscreen-btn {
       background-color: #2e7d32;
@@ -207,7 +199,6 @@
     .fullscreen-btn:hover {
       background-color: #1b5e20;
     }
-
     /* Game Instructions Popup */
     .game-instructions {
       position: absolute;
@@ -247,7 +238,6 @@
     .start-game-btn:hover {
       background-color: #1b5e20;
     }
-
     /* Earth Defender Game Styles */
     #earthDefenderHealthBar {
       position: absolute;
@@ -266,7 +256,6 @@
       background-color: #2ecc71;
       transition: width 0.3s;
     }
-
     /* Pixelated style for health and ammo text */
     #earthDefenderHealthText,
     #earthDefenderAmmoDisplay {
@@ -328,7 +317,6 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
     /* Rules text on the right side of the game, center-aligned */
     .game-rules {
       max-width: 300px;
@@ -340,7 +328,6 @@
       border: none;
       padding: 0;
     }
-    
     /* Footer styling */
     footer {
       width: 100%;
@@ -350,7 +337,6 @@
       padding: 10px 0;
       margin-top: 20px;
     }
-
     /* Mobile responsiveness */
     @media (max-width: 600px) {
       .info-content {
@@ -361,8 +347,9 @@
         align-items: center;
       }
       #gameContainer2 {
-        width: 90vw;
-        height: auto;
+        /* We'll keep the base resolution (500x400) for mobile non-full-screen mode */
+        width: 500px;
+        height: 400px;
       }
     }
   </style>
@@ -405,7 +392,7 @@
         <p>
           Earth Day is celebrated on the 22nd of April every year around the globe to propagate awareness about environmental degradation and make it easier for activities to rescue our planet. Earth Day was initially celebrated in 1970 and gave rise to the current-day environmental movement. United States Senator Gaylord Nelson initiated Earth Day with a focus on bringing environmental pollution and degradation to the forefront.
         </p>
-        <!-- The image is now placed after the first paragraph -->
+        <!-- The image is placed after the first paragraph -->
         <img src="https://sissjearthday.tiiny.site/earth_day_cleaner.png" alt="Earth Day Cleaner">
         <p>
           Earth Day is today a global movement, with more than 1 billion people getting involved every year by planting trees, picking up trash, encouraging recycling, reducing plastic consumption, and pushing for climate policy.
@@ -510,7 +497,7 @@
     });
     gamesNavBtn.addEventListener('click', () => { scrollToSection('games'); });
 
-    // Fullscreen button functionality (only Earth Defender exists, identified as game "2")
+    // Fullscreen button functionality
     const fullscreenButtons = document.querySelectorAll('.fullscreen-btn');
     fullscreenButtons.forEach(button => {
       button.addEventListener('click', function() {
@@ -528,33 +515,45 @@
           // Save original inline styles.
           gameContainer.dataset.originalWidth = gameContainer.style.width;
           gameContainer.dataset.originalHeight = gameContainer.style.height;
-          // Set full-screen dimensions conditionally.
+          
           if (window.innerWidth <= 600) {
-            gameContainer.style.width = '90vw';
-            gameContainer.style.height = (90 / 1.25) + 'vw'; // 72vw to maintain 5:4 ratio
+            // Mobile: keep base canvas resolution and scale via CSS transform
+            gameContainer.style.width = '500px';
+            gameContainer.style.height = '400px';
+            let scale = Math.min(window.innerWidth / 500, 2);
+            gameContainer.style.transform = 'scale(' + scale + ')';
+            gameContainer.style.transformOrigin = 'center center';
+            document.getElementById('fullscreenGameContent').style.width = (500 * scale) + 'px';
+            document.getElementById('fullscreenGameContent').style.height = (400 * scale) + 'px';
+            // Do not change the canvas resolution so game elements remain at base scale.
           } else {
+            // Desktop: use the previous method
+            gameContainer.style.transform = '';
             gameContainer.style.width = '90vmin';
-            gameContainer.style.height = '72vmin';
+            gameContainer.style.height = '72vmin'; // maintains 5:4 ratio
           }
           gameContainer.style.display = 'block';
           gameContainer.style.margin = 'auto';
-          // Move the container to the fullscreen overlay.
+          // Move container to fullscreen overlay.
           const fullscreenGame = document.getElementById('fullscreenGame');
           const fullscreenGameContent = document.getElementById('fullscreenGameContent');
           fullscreenGameContent.innerHTML = '';
           fullscreenGameContent.appendChild(gameContainer);
           fullscreenGame.style.display = 'flex';
           currentFullscreenGame = gameNumber;
-          // Adjust the Earth Defender canvas.
-          const edCanvas = document.getElementById('earthDefenderCanvas');
-          if (edCanvas) {
-            edCanvas.width = gameContainer.offsetWidth;
-            edCanvas.height = gameContainer.offsetHeight;
-            edCanvas.style.display = 'block';
-            edCanvas.style.margin = '0 auto';
+          // For non-mobile, adjust canvas resolution; on mobile we keep it at base.
+          if (window.innerWidth > 600) {
+            const edCanvas = document.getElementById('earthDefenderCanvas');
+            if (edCanvas) {
+              edCanvas.width = gameContainer.offsetWidth;
+              edCanvas.height = gameContainer.offsetHeight;
+              edCanvas.style.display = 'block';
+              edCanvas.style.margin = '0 auto';
+            }
           }
           // Re-center the Earth.
-          if (typeof earth !== 'undefined') {
+          const edCanvas = document.getElementById('earthDefenderCanvas');
+          if (typeof earth !== 'undefined' && edCanvas) {
             earth.x = edCanvas.width / 2;
             earth.y = edCanvas.height / 2;
           }
@@ -571,6 +570,7 @@
         gameContainer.style.width = gameContainer.dataset.originalWidth || '500px';
         gameContainer.style.height = gameContainer.dataset.originalHeight || '400px';
         gameContainer.style.margin = '';
+        gameContainer.style.transform = ''; // remove scaling if applied
         if (originalPlaceholders[currentFullscreenGame]) {
           originalPlaceholders[currentFullscreenGame].parentNode.insertBefore(gameContainer, originalPlaceholders[currentFullscreenGame]);
           originalPlaceholders[currentFullscreenGame].remove();
@@ -592,6 +592,7 @@
       const ctx = canvas.getContext('2d');
       // Disable image smoothing for a crisp pixelated look
       ctx.imageSmoothingEnabled = false;
+      // Base resolution remains 500x400
       canvas.width = 500;
       canvas.height = 400;
       let earthDefenderGameStarted = false;
@@ -673,12 +674,11 @@
         arrow.rotation = angleToMouse;
       }
 
-      // In spawnWord, green words now have a 20% chance; red words will spawn 80% of the time.
-      // Also, words now spawn further away by using a multiplier of 2.
+      // In spawnWord, green words now have a 20% chance; red words 80%.
       function spawnWord() {
         if (activeWords.length >= 5) return;
         if (Math.random() > 0.05) return;
-        const isHelpful = Math.random() < 0.2;  // 20% chance green
+        const isHelpful = Math.random() < 0.2;
         const wordList = isHelpful ? helpfulWords : harmfulWords;
         const word = wordList[Math.floor(Math.random() * wordList.length)];
         const angle = Math.random() * Math.PI * 2;
@@ -814,7 +814,7 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         if (earthDefenderGameStarted) drawStars();
         if (earthDefenderGameStarted) {
-          // Draw the Earth using the image, keeping the same scale.
+          // Draw the Earth using the image.
           ctx.drawImage(earthImg, earth.x - earth.radius, earth.y - earth.radius, earth.radius * 2, earth.radius * 2);
           
           // Draw the arrow (pointer) using the arrow image, flipped by 90°.
@@ -829,7 +829,7 @@
             ctx.drawImage(bulletImg, projectile.x - projectile.size, projectile.y - projectile.size, projectile.size * 2, projectile.size * 2);
           }
           
-          // Use a smaller pixelated font for in-canvas text.
+          // Draw in-canvas text with a smaller pixelated font.
           ctx.font = '10px "Press Start 2P", monospace';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
