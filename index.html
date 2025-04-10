@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- The viewport meta tag ensures proper rendering on mobile devices -->
+  <!-- Viewport meta for mobile compatibility -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Earth Day</title>
 
-  <!-- Original fonts plus pixelated font for game text -->
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
@@ -73,7 +73,7 @@
       left: 50%;
       transform: translateX(-50%);
     }
-    /* Minimized Top Navigation Bar */
+    /* Navbar */
     .navbar {
       position: fixed;
       top: -100px;
@@ -108,7 +108,7 @@
       flex-direction: column;
       align-items: center;
     }
-    /* Information Section with text wrapping around image */
+    /* Information Section */
     #information {
       background-color: #f5f5f5;
     }
@@ -123,7 +123,7 @@
     }
     .info-text img {
       display: block;
-      margin: 50px auto 10px auto; /* 50px top margin to push it lower (under the first paragraph) */
+      margin: 50px auto 10px auto;  /* Image appears after first paragraph */
       max-width: 350px;
       height: auto;
       object-fit: contain;
@@ -317,7 +317,7 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    /* Rules text on the right side of the game, center-aligned */
+    /* Rules text on the right side */
     .game-rules {
       max-width: 300px;
       line-height: 1.6;
@@ -346,10 +346,10 @@
         flex-direction: column;
         align-items: center;
       }
+      /* For mobile non-fullscreen, use a smaller game container (300x240) */
       #gameContainer2 {
-        /* We'll keep the base resolution (500x400) for mobile non-full-screen mode */
-        width: 500px;
-        height: 400px;
+        width: 300px;
+        height: 240px;
       }
     }
   </style>
@@ -374,7 +374,7 @@
     <div class="close-fullscreen" id="closeFullscreen">×</div>
   </div>
 
-  <!-- Minimized top navigation bar -->
+  <!-- Navbar -->
   <nav id="navbar" class="navbar">
     <div id="openPopup" class="arrow-up">&#9650;</div>
     <div class="buttons">
@@ -392,7 +392,7 @@
         <p>
           Earth Day is celebrated on the 22nd of April every year around the globe to propagate awareness about environmental degradation and make it easier for activities to rescue our planet. Earth Day was initially celebrated in 1970 and gave rise to the current-day environmental movement. United States Senator Gaylord Nelson initiated Earth Day with a focus on bringing environmental pollution and degradation to the forefront.
         </p>
-        <!-- The image is placed after the first paragraph -->
+        <!-- Image placed after the first paragraph -->
         <img src="https://sissjearthday.tiiny.site/earth_day_cleaner.png" alt="Earth Day Cleaner">
         <p>
           Earth Day is today a global movement, with more than 1 billion people getting involved every year by planting trees, picking up trash, encouraging recycling, reducing plastic consumption, and pushing for climate policy.
@@ -407,11 +407,11 @@
     </div>
   </section>
 
-  <!-- Game Section (Only one game remains) -->
+  <!-- Game Section -->
   <section id="games" class="section">
     <h2>Game</h2>
     <div class="games-container">
-      <!-- Earth Defender Game (Left side) -->
+      <!-- Earth Defender Game (Left Side) -->
       <div class="game-wrapper">
         <h3>Earth Defender</h3>
         <div id="gameContainer2" class="game-container">
@@ -442,7 +442,7 @@
         </div>
         <button class="fullscreen-btn" data-game="2">Full Screen</button>
       </div>
-      <!-- Game Rules Panel (Right side, plain text) -->
+      <!-- Game Rules Panel (Right Side) -->
       <div class="game-rules">
         This retro-inspired game challenges you to defend the planet from harmful influences. By shooting incoming threats and collecting helpful words, you actively contribute to preserving Earth’s vitality. The gameplay reflects Earth Day’s message by emphasizing the importance of environmental stewardship. Every shot and every saved word reminds you that even small efforts matter in protecting our world.
       </div>
@@ -504,7 +504,7 @@
         const gameNumber = this.getAttribute('data-game');
         if (gameNumber === '2') {
           const gameContainer = document.getElementById('gameContainer2');
-          // Store original parent and insert placeholder if not done.
+          // Store original parent and placeholder if not already done.
           if (!originalParents[gameNumber]) {
             originalParents[gameNumber] = gameContainer.parentElement;
             const placeholder = document.createElement('div');
@@ -517,20 +517,15 @@
           gameContainer.dataset.originalHeight = gameContainer.style.height;
           
           if (window.innerWidth <= 600) {
-            // Mobile: keep base canvas resolution and scale via CSS transform
-            gameContainer.style.width = '500px';
-            gameContainer.style.height = '400px';
-            let scale = Math.min(window.innerWidth / 500, 2);
-            gameContainer.style.transform = 'scale(' + scale + ')';
-            gameContainer.style.transformOrigin = 'center center';
-            document.getElementById('fullscreenGameContent').style.width = (500 * scale) + 'px';
-            document.getElementById('fullscreenGameContent').style.height = (400 * scale) + 'px';
-            // Do not change the canvas resolution so game elements remain at base scale.
+            // On mobile, keep non-fullscreen size (300x240) for fullscreen mode.
+            gameContainer.style.transform = ''; // Remove any transform.
+            gameContainer.style.width = '300px';
+            gameContainer.style.height = '240px';
           } else {
-            // Desktop: use the previous method
+            // On larger screens, use the existing sizing.
             gameContainer.style.transform = '';
             gameContainer.style.width = '90vmin';
-            gameContainer.style.height = '72vmin'; // maintains 5:4 ratio
+            gameContainer.style.height = '72vmin'; // 90/1.25 = 72
           }
           gameContainer.style.display = 'block';
           gameContainer.style.margin = 'auto';
@@ -541,7 +536,7 @@
           fullscreenGameContent.appendChild(gameContainer);
           fullscreenGame.style.display = 'flex';
           currentFullscreenGame = gameNumber;
-          // For non-mobile, adjust canvas resolution; on mobile we keep it at base.
+          // For larger screens, update canvas resolution; on mobile, keep base resolution.
           if (window.innerWidth > 600) {
             const edCanvas = document.getElementById('earthDefenderCanvas');
             if (edCanvas) {
@@ -561,16 +556,15 @@
       });
     });
 
-    // Close fullscreen – return container to its original location.
+    // Close fullscreen – return container to original location.
     const closeFullscreen = document.getElementById('closeFullscreen');
     closeFullscreen.addEventListener('click', () => {
       if (currentFullscreenGame) {
         const gameContainer = document.getElementById('gameContainer2');
-        // Restore original dimensions.
         gameContainer.style.width = gameContainer.dataset.originalWidth || '500px';
         gameContainer.style.height = gameContainer.dataset.originalHeight || '400px';
         gameContainer.style.margin = '';
-        gameContainer.style.transform = ''; // remove scaling if applied
+        gameContainer.style.transform = ''; // Remove any transform.
         if (originalPlaceholders[currentFullscreenGame]) {
           originalPlaceholders[currentFullscreenGame].parentNode.insertBefore(gameContainer, originalPlaceholders[currentFullscreenGame]);
           originalPlaceholders[currentFullscreenGame].remove();
@@ -584,17 +578,20 @@
       }
     });
 
-    // =============================================
     // EARTH DEFENDER GAME CODE
-    // =============================================
     document.addEventListener('DOMContentLoaded', function() {
       const canvas = document.getElementById('earthDefenderCanvas');
       const ctx = canvas.getContext('2d');
-      // Disable image smoothing for a crisp pixelated look
+      // Disable image smoothing for pixelated look.
       ctx.imageSmoothingEnabled = false;
-      // Base resolution remains 500x400
-      canvas.width = 500;
-      canvas.height = 400;
+      // Set canvas resolution conditionally.
+      if (window.innerWidth <= 600) {
+        canvas.width = 300;
+        canvas.height = 240;
+      } else {
+        canvas.width = 500;
+        canvas.height = 400;
+      }
       let earthDefenderGameStarted = false;
       let earthHealth = 100;
       let earthDefenderGameRunning = true;
@@ -616,13 +613,11 @@
       let mouseY = 0;
       let stars = [];
 
-      // Load the Earth image
+      // Load images
       const earthImg = new Image();
       earthImg.src = "https://sissjearthday.tiiny.site/earth_day_earth.png";
-      // Load the arrow image
       const arrowImg = new Image();
       arrowImg.src = "https://sissjearthday.tiiny.site/earth_day_pointer.png";
-      // Load the bullet image
       const bulletImg = new Image();
       bulletImg.src = "https://sissjearthday.tiiny.site/earth_day_bullet.png";
 
@@ -674,7 +669,6 @@
         arrow.rotation = angleToMouse;
       }
 
-      // In spawnWord, green words now have a 20% chance; red words 80%.
       function spawnWord() {
         if (activeWords.length >= 5) return;
         if (Math.random() > 0.05) return;
@@ -829,7 +823,7 @@
             ctx.drawImage(bulletImg, projectile.x - projectile.size, projectile.y - projectile.size, projectile.size * 2, projectile.size * 2);
           }
           
-          // Draw in-canvas text with a smaller pixelated font.
+          // In-canvas text with a pixelated font.
           ctx.font = '10px "Press Start 2P", monospace';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
