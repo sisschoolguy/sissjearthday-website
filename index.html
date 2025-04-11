@@ -23,13 +23,13 @@
       font-family: 'Montserrat', sans-serif;
       line-height: 1.6; 
       color: #333;
-      font-size: 18px; /* Increased base font size */
+      font-size: 18px;
     }
     h1, h2, h3 {
       font-weight: 700;
     }
 
-    /* Full-screen Pop-up */
+    /* Full-screen Pop-up - Fixed centering */
     .popup {
       position: fixed;
       top: 0; left: 0;
@@ -43,7 +43,9 @@
     }
     .popup-content { 
       text-align: center; 
-      max-width: 90%; 
+      max-width: 90%;
+      width: 100%;
+      padding: 20px;
     }
     .popup h1 {
       font-size: 2.5rem; 
@@ -53,17 +55,23 @@
       font-size: 1.2rem; 
       margin-bottom: 2rem; 
     }
-    .buttons button {
+    .popup .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .popup .buttons button {
       background: none; 
       border: none; 
       font-size: 1.2rem; 
-      margin: 0 1rem; 
       cursor: pointer; 
       color: #333; 
       transition: opacity 0.3s ease; 
       padding: 10px 20px;
+      margin: 0;
     }
-    .buttons button:hover { 
+    .popup .buttons button:hover { 
       opacity: 0.7; 
     }
     .arrow-down, .arrow-up {
@@ -75,7 +83,7 @@
       transform: translateX(-50%); 
     }
 
-    /* Minimized Top Navigation Bar */
+    /* Minimized Top Navigation Bar - Compact with adjusted arrow */
     .navbar {
       position: fixed; 
       top: -100px; 
@@ -84,42 +92,48 @@
       background-color: #c8e6c9; 
       display: flex; 
       align-items: center;
-      padding: 1rem; 
+      padding: 0.5rem;
       transition: top 0.5s ease; 
       z-index: 999;
+      height: 40px;
     }
     .navbar .buttons {
       display: flex; 
-      gap: 1rem; 
+      gap: 0.5rem;
       margin-right: auto;
     }
     .navbar h1 {
-      font-size: 1.2rem; 
+      font-size: 1rem;
       margin-left: auto;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 40%;
     }
     .arrow-up {
-      font-size: 1.5rem; 
+      font-size: 1.2rem;
       cursor: pointer; 
-      margin-right: 1rem;
+      margin-right: 0.5rem;
+      position: relative;
+      top: 2px; /* Adjusted arrow position */
     }
 
     /* Page Sections */
     .section {
-      padding: 5rem 1rem 2rem;
+      padding: 4rem 1rem 2rem;
       min-height: 100vh; 
       display: flex;
       flex-direction: column; 
       align-items: center;
     }
 
-    /* Information Section with updated text and floated image */
+    /* Information Section */
     #information { 
       background-color: #f5f5f5; 
     }
     .info-content {
       width: 100%;
-      font-size: 1.1rem; /* Increased text size */
+      font-size: 1.1rem;
     }
     .info-content img {
       float: right;
@@ -130,13 +144,13 @@
       object-fit: contain;
     }
     .info-content p {
-      margin-bottom: 1.5rem; /* Increased spacing */
+      margin-bottom: 1.5rem;
       text-align: justify;
-      font-size: 1.1rem; /* Increased text size */
-      line-height: 1.8; /* Better readability */
+      font-size: 1.1rem;
+      line-height: 1.8;
     }
 
-    /* Game Section (Only one game remains) */
+    /* Game Section */
     #games { 
       background-color: #e0e0e0; 
     }
@@ -146,7 +160,7 @@
     .games-container {
       display: flex; 
       flex-direction: column;
-      gap: 40px; 
+      gap: 20px;
       justify-content: flex-start;
       margin-top: 20px;
       align-items: center;
@@ -160,7 +174,7 @@
       width: 100%;
     }
 
-    /* Earth Defender Container */
+    /* Earth Defender Container - Adjusted scaling */
     #gameContainer2 {
       position: relative; 
       overflow: hidden; 
@@ -350,7 +364,7 @@
       width: 500px;
       line-height: 1.6;
       font-family: 'Montserrat', sans-serif;
-      font-size: 16px; /* Increased font size */
+      font-size: 16px;
       color: #000;
       background: none;
       border: none;
@@ -361,7 +375,7 @@
     footer {
       width: 100%;
       text-align: center;
-      font-size: 12px; /* Slightly larger footer text */
+      font-size: 12px;
       color: #333;
       padding: 15px 0;
       margin-top: 20px;
@@ -381,9 +395,8 @@
         font-size: 1rem;
       }
       
-      .buttons button {
+      .popup .buttons button {
         font-size: 1rem;
-        margin: 0 0.5rem;
         padding: 8px 16px;
       }
       
@@ -412,22 +425,15 @@
         width: 100px;
       }
       
-      .navbar h1 {
-        font-size: 1rem;
-      }
-      
-      .navbar .buttons button {
-        font-size: 0.9rem;
-      }
-      
-      /* Game scaling for mobile */
+      /* Adjusted game scaling */
       #gameContainer2 {
-        height: 300px; /* Reduced height for better mobile display */
+        transform: scale(1.05); /* Reduced from 1.1 */
+        transform-origin: top center;
+        margin: 15px 0;
       }
       
-      #earthDefenderCanvas {
-        width: 100% !important;
-        height: 100% !important;
+      .games-container {
+        gap: 10px;
       }
     }
 
@@ -436,19 +442,17 @@
         font-size: 1.8rem;
       }
       
-      .buttons {
-        display: flex;
+      .popup .buttons {
         flex-direction: column;
         gap: 10px;
       }
       
-      .buttons button {
-        margin: 5px 0;
+      .popup .buttons button {
         width: 100%;
       }
       
       .section {
-        padding: 4rem 1rem 2rem;
+        padding: 3.5rem 1rem 2rem;
       }
       
       #earthDefenderRulesPopup h2 {
@@ -459,9 +463,28 @@
         font-size: 0.9rem;
       }
       
-      /* Further game scaling for very small devices */
+      /* Adjusted game scaling */
       #gameContainer2 {
-        height: 250px;
+        transform: scale(1.1); /* Reduced from 1.2 */
+        height: 350px;
+      }
+      
+      /* Compact navbar adjustments */
+      .navbar {
+        height: 36px;
+      }
+      
+      .navbar .buttons button {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+      }
+      
+      .navbar h1 {
+        font-size: 0.9rem;
+      }
+      
+      .arrow-up {
+        top: 1px; /* Further adjusted arrow position */
       }
     }
   </style>
@@ -738,10 +761,11 @@
         }
       }
 
+      // Increased space around earth by scaling down elements
       const earth = {
         x: canvas.width / 2,
         y: canvas.height / 2,
-        radius: Math.min(canvas.width, canvas.height) * 0.1, // Responsive radius
+        radius: Math.min(canvas.width, canvas.height) * 0.07, // Reduced from 0.1 to create more space
         angle: 0
       };
 
@@ -749,9 +773,9 @@
         x: 0,
         y: 0,
         angle: 0,
-        size: Math.min(canvas.width, canvas.height) * 0.04, // Responsive size
+        size: Math.min(canvas.width, canvas.height) * 0.03, // Reduced size
         rotation: 0,
-        orbitDistance: Math.min(canvas.width, canvas.height) * 0.16 // Responsive distance
+        orbitDistance: Math.min(canvas.width, canvas.height) * 0.12 // Reduced distance
       };
 
       function startGame() {
@@ -780,7 +804,7 @@
         const wordList = isHelpful ? helpfulWords : harmfulWords;
         const word = wordList[Math.floor(Math.random() * wordList.length)];
         const angle = Math.random() * Math.PI * 2;
-        const distance = (Math.max(canvas.width, canvas.height) / 2) * 2;  // Spawn further out
+        const distance = (Math.max(canvas.width, canvas.height) / 2) * 1.5; // Increased spawn distance by 1.5x
         const x = earth.x + Math.cos(angle) * distance;
         const y = earth.y + Math.sin(angle) * distance;
         const baseSpeed = 0.8;
@@ -801,7 +825,7 @@
           isHelpful: isHelpful,
           rotation: rotation,
           rotationSpeed: rotationSpeed,
-          fontSize: Math.min(canvas.width, canvas.height) * 0.03 // Responsive font size
+          fontSize: Math.min(canvas.width, canvas.height) * 0.025 // Smaller font
         });
       }
 
@@ -809,13 +833,23 @@
         if (ammo <= 0 || !earthDefenderGameStarted) return;
         ammo--;
         updateAmmo();
-        const angleToMouse = Math.atan2(mouseY - arrow.y, mouseX - arrow.x);
+        const angleToMouse = Math.atan2(mouseY - earth.y, mouseX - earth.x);
+        
+        // Only shoot if clicking outside earth's radius (1.5x to match new space)
+        const clickDistance = Math.sqrt(Math.pow(mouseX - earth.x, 2) + Math.pow(mouseY - earth.y, 2));
+        if (clickDistance <= earth.radius * 1.5) return;
+        
+        // Calculate position at the arrow's tip (slightly in front of arrow)
+        const tipDistance = arrow.size * 0.8;
+        const tipX = arrow.x + Math.cos(angleToMouse) * tipDistance;
+        const tipY = arrow.y + Math.sin(angleToMouse) * tipDistance;
+        
         projectiles.push({
-          x: arrow.x,
-          y: arrow.y,
-          speed: 7 * (canvas.width / 500), // Scale speed based on canvas size
+          x: tipX,
+          y: tipY,
+          speed: 7 * (canvas.width / 500),
           angle: angleToMouse,
-          size: 10 * (canvas.width / 500) // Scale size based on canvas size
+          size: 8 * (canvas.width / 500) // Smaller bullets
         });
       }
 
@@ -872,7 +906,7 @@
             const dx = projectile.x - word.x;
             const dy = projectile.y - word.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < 30 * (canvas.width / 500)) { // Scale collision distance
+            if (distance < 25 * (canvas.width / 500)) { // Smaller collision distance
               activeWords.splice(j, 1);
               projectiles.splice(i, 1);
               break;
@@ -929,7 +963,7 @@
           }
           
           // Use a smaller pixelated font for in-canvas text.
-          const baseFontSize = Math.min(canvas.width, canvas.height) * 0.03;
+          const baseFontSize = Math.min(canvas.width, canvas.height) * 0.025;
           ctx.font = `${baseFontSize}px "Press Start 2P", monospace`;
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
@@ -958,12 +992,12 @@
         canvas.height = container.offsetHeight;
         
         // Update game elements sizes
-        earth.radius = Math.min(canvas.width, canvas.height) * 0.1;
+        earth.radius = Math.min(canvas.width, canvas.height) * 0.07;
         earth.x = canvas.width / 2;
         earth.y = canvas.height / 2;
         
-        arrow.size = Math.min(canvas.width, canvas.height) * 0.04;
-        arrow.orbitDistance = Math.min(canvas.width, canvas.height) * 0.16;
+        arrow.size = Math.min(canvas.width, canvas.height) * 0.03;
+        arrow.orbitDistance = Math.min(canvas.width, canvas.height) * 0.12;
       }
 
       window.addEventListener('resize', handleResize);
@@ -975,20 +1009,6 @@
       });
 
       canvas.addEventListener('click', () => {
-        if (earthDefenderGameRunning) createProjectile();
-      });
-
-      // Add touch support for mobile devices
-      canvas.addEventListener('touchmove', (e) => {
-        e.preventDefault();
-        const rect = canvas.getBoundingClientRect();
-        const touch = e.touches[0];
-        mouseX = touch.clientX - rect.left;
-        mouseY = touch.clientY - rect.top;
-      });
-
-      canvas.addEventListener('touchstart', (e) => {
-        e.preventDefault();
         if (earthDefenderGameRunning) createProjectile();
       });
 
