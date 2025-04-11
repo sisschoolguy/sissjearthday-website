@@ -29,7 +29,7 @@
       font-weight: 700;
     }
 
-    /* Full-screen Pop-up - Fixed centering */
+    /* Full-screen Pop-up - with background image */
     .popup {
       position: fixed;
       top: 0; left: 0;
@@ -40,12 +40,18 @@
       align-items: center;
       transition: all 0.5s ease; 
       z-index: 1000;
+      background-image: url('https://sissjearthday.tiiny.site/image_2025-04-11_191011304.png');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
     }
     .popup-content { 
       text-align: center; 
       max-width: 90%;
       width: 100%;
       padding: 20px;
+      background-color: rgba(200, 230, 201, 0.85);
+      border-radius: 10px;
     }
     .popup h1 {
       font-size: 2.5rem; 
@@ -83,7 +89,7 @@
       transform: translateX(-50%); 
     }
 
-    /* Minimized Top Navigation Bar - Compact with adjusted arrow */
+    /* Minimized Top Navigation Bar - with logo and styled buttons */
     .navbar {
       position: fixed; 
       top: -100px; 
@@ -92,35 +98,72 @@
       background-color: #c8e6c9; 
       display: flex; 
       align-items: center;
-      padding: 0.5rem;
+      padding: 0.5rem 1rem;
       transition: top 0.5s ease; 
       z-index: 999;
-      height: 40px;
+      height: 50px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .navbar .logo {
+      height: 30px;
+      margin-right: 10px;
     }
     .navbar .buttons {
       display: flex; 
-      gap: 0.5rem;
+      gap: 1rem;
       margin-right: auto;
     }
+    .navbar .buttons button {
+      background: none;
+      border: none;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: #333;
+      transition: all 0.3s ease;
+      padding: 5px 10px;
+      position: relative;
+    }
+    .navbar .buttons button:hover {
+      opacity: 0.7;
+    }
+    .navbar .buttons button::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #2e7d32;
+      transition: width 0.3s ease;
+    }
+    .navbar .buttons button:hover::after {
+      width: 100%;
+    }
     .navbar h1 {
-      font-size: 1rem;
+      font-size: 1.2rem;
       margin-left: auto;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 40%;
+      display: flex;
+      align-items: center;
+    }
+    .navbar h1 img {
+      height: 20px;
+      margin-right: 8px;
     }
     .arrow-up {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       cursor: pointer; 
-      margin-right: 0.5rem;
+      margin-right: 1rem;
       position: relative;
-      top: 2px; /* Adjusted arrow position */
+      top: 1px;
     }
 
     /* Page Sections */
     .section {
-      padding: 4rem 1rem 2rem;
+      padding: 5rem 1rem 2rem;
       min-height: 100vh; 
       display: flex;
       flex-direction: column; 
@@ -427,13 +470,25 @@
       
       /* Adjusted game scaling */
       #gameContainer2 {
-        transform: scale(1.05); /* Reduced from 1.1 */
+        transform: scale(1.05);
         transform-origin: top center;
         margin: 15px 0;
       }
       
       .games-container {
         gap: 10px;
+      }
+      
+      .navbar {
+        padding: 0.5rem;
+      }
+      
+      .navbar h1 {
+        font-size: 1rem;
+      }
+      
+      .navbar .buttons button {
+        font-size: 0.9rem;
       }
     }
 
@@ -452,7 +507,7 @@
       }
       
       .section {
-        padding: 3.5rem 1rem 2rem;
+        padding: 4rem 1rem 2rem;
       }
       
       #earthDefenderRulesPopup h2 {
@@ -465,13 +520,13 @@
       
       /* Adjusted game scaling */
       #gameContainer2 {
-        transform: scale(1.1); /* Reduced from 1.2 */
+        transform: scale(1.1);
         height: 350px;
       }
       
       /* Compact navbar adjustments */
       .navbar {
-        height: 36px;
+        height: 45px;
       }
       
       .navbar .buttons button {
@@ -483,14 +538,19 @@
         font-size: 0.9rem;
       }
       
+      .navbar h1 img {
+        height: 16px;
+      }
+      
       .arrow-up {
-        top: 1px; /* Further adjusted arrow position */
+        top: 0;
+        font-size: 1.2rem;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Full-screen pop-up -->
+  <!-- Full-screen pop-up with background image -->
   <div id="popup" class="popup">
     <div class="popup-content">
       <h1>Earth Day</h1>
@@ -509,14 +569,14 @@
     <div class="close-fullscreen" id="closeFullscreen">×</div>
   </div>
 
-  <!-- Minimized top navigation bar -->
+  <!-- Minimized top navigation bar with logo -->
   <nav id="navbar" class="navbar">
     <div id="openPopup" class="arrow-up">&#9650;</div>
     <div class="buttons">
       <button id="infoNavBtn">Information</button>
       <button id="gamesNavBtn">Game</button>
     </div>
-    <h1>Earth Day</h1>
+    <h1><img src="https://sissjearthday.tiiny.site/image_2025-04-11_191011304.png" alt="Earth Day Logo">Earth Day</h1>
   </nav>
 
   <!-- Information Section -->
