@@ -110,25 +110,23 @@
       align-items: center;
     }
 
-    /* Information Section with revised image placement */
+    /* Information Section with updated text and floated image */
     #information { 
       background-color: #f5f5f5; 
     }
     .info-content {
       width: 100%;
-      max-width: 900px;
+    }
+    .info-content img {
+      float: right;
+      margin: 20px 0 10px 10px;  /* Top margin increased to 20px */
+      max-width: 350px;         /* Increased from 300px to 350px */
+      height: auto;
+      object-fit: contain;
     }
     .info-content p {
       margin-bottom: 1rem;
       text-align: justify;
-    }
-    /* The image is inserted after the first paragraph and floated right */
-    .info-img {
-      float: right;
-      margin: 10px 0 10px 10px;
-      max-width: 350px;
-      height: auto;
-      object-fit: contain;
     }
 
     /* Game Section (Only one game remains) */
@@ -390,15 +388,14 @@
   <section id="information" class="section">
     <h2>Information</h2>
     <div class="info-content">
+      <img 
+        src="https://sissjearthday.tiiny.site/earth_day_cleaner.png" 
+        alt="Earth Day Cleaner"
+      >
       <div>
         <p>
           Earth Day is celebrated on the 22nd of April every year around the globe to propagate awareness about environmental degradation and make it easier for activities to rescue our planet. Earth Day was initially celebrated in 1970 and gave rise to the current-day environmental movement. United States Senator Gaylord Nelson initiated Earth Day with a focus on bringing environmental pollution and degradation to the forefront.
         </p>
-        <img 
-          src="https://sissjearthday.tiiny.site/earth_day_cleaner.png" 
-          alt="Earth Day Cleaner" 
-          class="info-img"
-        >
         <p>
           Earth Day is today a global movement, with more than 1 billion people getting involved every year by planting trees, picking up trash, encouraging recycling, reducing plastic consumption, and pushing for climate policy.
         </p>
@@ -775,7 +772,7 @@
 
       function updateHealth() {
         document.getElementById('earthDefenderHealthValue').textContent = earthHealth;
-        document.getElementById('earthDefenderHealthFill').style.width = ${earthHealth}%;
+        document.getElementById('earthDefenderHealthFill').style.width = `${earthHealth}%`;
         if (earthHealth < 30) {
           document.getElementById('earthDefenderHealthFill').style.backgroundColor = '#e74c3c';
         } else if (earthHealth < 60) {
