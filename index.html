@@ -352,6 +352,29 @@
       padding: 10px 0;
       margin-top: 20px;
     }
+
+    /* Mobile Responsive Adjustments */
+    @media screen and (max-width: 768px) {
+      /* Stack game elements and adjust layout */
+      .games-container {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+      }
+      /* Make the game container responsive */
+      #gameContainer2 {
+        width: 90%;
+        height: auto;
+        aspect-ratio: 5 / 4;
+      }
+      /* Remove float on info image and center it */
+      .info-content img {
+        float: none;
+        display: block;
+        margin: 0 auto 20px;
+        max-width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
