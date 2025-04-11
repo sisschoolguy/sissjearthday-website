@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Earth Day</title>
 
   <!-- Original fonts plus pixelated font for game text -->
@@ -45,7 +45,7 @@
       max-width: 80%; 
     }
     .popup h1 {
-      font-size: 4rem; 
+      font-size: 2.5rem; 
       margin-bottom: 1rem; 
     }
     .popup p {
@@ -82,7 +82,7 @@
       background-color: #c8e6c9; 
       display: flex; 
       align-items: center;
-      padding: 1rem 2rem; 
+      padding: 1rem; 
       transition: top 0.5s ease; 
       z-index: 999;
     }
@@ -92,8 +92,9 @@
       margin-right: auto;
     }
     .navbar h1 {
-      font-size: 1.5rem; 
+      font-size: 1.2rem; 
       margin-left: auto;
+      white-space: nowrap;
     }
     .arrow-up {
       font-size: 1.5rem; 
@@ -103,7 +104,7 @@
 
     /* Page Sections */
     .section {
-      padding: 6rem 2rem 2rem;
+      padding: 5rem 1rem 2rem;
       min-height: 100vh; 
       display: flex;
       flex-direction: column; 
@@ -119,8 +120,9 @@
     }
     .info-content img {
       float: right;
-      margin: 20px 0 10px 10px;  /* Top margin increased to 20px */
-      max-width: 350px;         /* Increased from 300px to 350px */
+      margin: 0 0 10px 10px;
+      max-width: 100%;
+      width: 350px;
       height: auto;
       object-fit: contain;
     }
@@ -138,17 +140,19 @@
     }
     .games-container {
       display: flex; 
-      gap: 80px; 
+      flex-direction: column;
+      gap: 40px; 
       justify-content: flex-start;
-      flex-wrap: nowrap;
-      margin-top: 40px;
+      margin-top: 20px;
       align-items: center;
+      width: 100%;
     }
     .game-wrapper {
       display: flex; 
       flex-direction: column; 
       align-items: center; 
       gap: 10px;
+      width: 100%;
     }
 
     /* Earth Defender Container */
@@ -157,7 +161,8 @@
       overflow: hidden; 
       border: 2px solid #333; 
       background-color: #000;
-      width: 500px; 
+      width: 100%;
+      max-width: 500px;
       height: 400px;
     }
 
@@ -180,6 +185,8 @@
       display: flex; 
       justify-content: center; 
       align-items: center;
+      width: 100%;
+      height: 100%;
     }
     .close-fullscreen {
       position: absolute; 
@@ -201,6 +208,7 @@
       cursor: pointer; 
       font-size: 14px; 
       transition: background-color 0.3s;
+      width: auto;
     }
     .fullscreen-btn:hover { 
       background-color: #1b5e20; 
@@ -333,7 +341,8 @@
 
     /* Rules text on the right side of the game, center-aligned */
     .game-rules {
-      max-width: 300px;
+      max-width: 100%;
+      width: 500px;
       line-height: 1.6;
       font-family: 'Montserrat', sans-serif;
       font-size: 14px;
@@ -353,26 +362,76 @@
       margin-top: 20px;
     }
 
-    /* Mobile Responsive Adjustments */
-    @media screen and (max-width: 768px) {
-      /* Stack game elements and adjust layout */
-      .games-container {
-        flex-direction: column;
-        gap: 20px;
-        align-items: center;
+    /* Mobile-specific styles */
+    @media (max-width: 768px) {
+      .popup h1 {
+        font-size: 2rem;
       }
-      /* Make the game container responsive */
-      #gameContainer2 {
-        width: 90%;
-        height: auto;
-        aspect-ratio: 5 / 4;
+      
+      .popup p {
+        font-size: 1rem;
       }
-      /* Remove float on info image and center it */
+      
+      .buttons button {
+        font-size: 1rem;
+        margin: 0 0.5rem;
+      }
+      
       .info-content img {
         float: none;
         display: block;
         margin: 0 auto 20px;
-        max-width: 100%;
+        width: 100%;
+        max-width: 300px;
+      }
+      
+      #earthDefenderHealthText {
+        right: 10px;
+        top: 35px;
+      }
+      
+      #earthDefenderAmmoDisplay {
+        font-size: 8px;
+      }
+      
+      #earthDefenderHealthBar {
+        width: 100px;
+      }
+      
+      .navbar h1 {
+        font-size: 1rem;
+      }
+      
+      .navbar .buttons button {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .popup h1 {
+        font-size: 1.8rem;
+      }
+      
+      .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .buttons button {
+        margin: 5px 0;
+      }
+      
+      .section {
+        padding: 4rem 1rem 2rem;
+      }
+      
+      #earthDefenderRulesPopup h2 {
+        font-size: 1.2rem;
+      }
+      
+      #earthDefenderRulesPopup p {
+        font-size: 0.9rem;
       }
     }
   </style>
@@ -469,7 +528,7 @@
       </div>
       <!-- Game Rules Panel (Right side, plain text) -->
       <div class="game-rules">
-        This retro-inspired game challenges you to defend the planet from harmful influences. By shooting incoming threats and collecting helpful words, you actively contribute to preserving Earth’s vitality. The gameplay reflects Earth Day’s message by emphasizing the importance of environmental stewardship. Every shot and every saved word reminds you that even small efforts matter in protecting our world.
+        This retro-inspired game challenges you to defend the planet from harmful influences. By shooting incoming threats and collecting helpful words, you actively contribute to preserving Earth's vitality. The gameplay reflects Earth Day's message by emphasizing the importance of environmental stewardship. Every shot and every saved word reminds you that even small efforts matter in protecting our world.
       </div>
     </div>
   </section>
@@ -575,7 +634,7 @@
       if (currentFullscreenGame) {
         const gameContainer = document.getElementById('gameContainer2');
         // Restore original dimensions.
-        gameContainer.style.width = gameContainer.dataset.originalWidth || '500px';
+        gameContainer.style.width = gameContainer.dataset.originalWidth || '100%';
         gameContainer.style.height = gameContainer.dataset.originalHeight || '400px';
         gameContainer.style.margin = '';
         if (originalPlaceholders[currentFullscreenGame]) {
@@ -864,6 +923,20 @@
       });
 
       canvas.addEventListener('click', () => {
+        if (earthDefenderGameRunning) createProjectile();
+      });
+
+      // Add touch support for mobile devices
+      canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        mouseX = touch.clientX - rect.left;
+        mouseY = touch.clientY - rect.top;
+      });
+
+      canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
         if (earthDefenderGameRunning) createProjectile();
       });
 
