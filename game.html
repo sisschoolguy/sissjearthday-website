@@ -77,14 +77,12 @@
       box-sizing: border-box;
       z-index: 20;
       color: white;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
     }
-    #deathScreen h2 {
-      margin-bottom: 1rem;
-      color: white;
-    }
-    #deathScreen p {
-      margin-bottom: 1rem;
-      line-height: 1.6;
+    #deathScreen.show {
+      display: flex;
+      opacity: 1;
     }
   </style>
 </head>
@@ -111,8 +109,7 @@
     let gap;
     let score = 0;
     let gameState = "start"; // "start", "playing", "gameover"
-    let holeX, holeY; // For the deadly hole
-    let holeActive = false;
+    let carbonEmissions = [];
     let treeImg, platformImg, squirrelImg, carbonImg, cloudImg, starsImg;
     const worldFloorY = 550; // Extended floor
     let treeOffset = 0;
@@ -122,14 +119,21 @@
     let starsActive = false;
     let starSections = [];
     const starSectionHeight = 150; // Height of each star section
+    let smokeFrames = [];
+    let currentSmokeFrame = 0;
+    let smokeAnimating = false;
+    let smokeAnimationComplete = false;
 
     function preload() {
       treeImg = loadImage("https://sissjearthday.tiiny.site/tree_trunk.png");
       platformImg = loadImage("https://sissjearthday.tiiny.site/platform.png");
       squirrelImg = loadImage("https://sissjearthday.tiiny.site/squirrel.png");
-      carbonImg = loadImage("https://sissjearthday.tiiny.site/ChatGPT-Image-Apr-12,-2025,-01_41_19-PM.png");
       cloudImg = loadImage("https://sissjearthday.tiiny.site/cloud.png");
       starsImg = loadImage("https://sissjearthday.tiiny.site/stars.png");
+      
+      // Load smoke GIF frames (we'll simulate this with a sprite sheet)
+      // For this example, we'll use a single image as a placeholder
+      carbonImg = loadImage("https://sissjearthday.tiiny.site/smoke-gif.gif");
     }
 
     function setup() {
@@ -263,6 +267,68 @@
       }
     }
 
+    function spawnCarbonEmission() {
+      if (frameCount % 120 === 0 && random() < 0.3) {
+        carbonEmissions.push({
+          x: width / 2 - treeWidth/2 + random(treeWidth),
+          y: doodler.y - height / 2 - 100,
+          width: 40,
+          height: 40,
+          speed: random(1, 3),
+          direction: random() < 0.5 ? -1 : 1,
+          frame: 0,
+          animating: false,
+          hit: false
+        });
+      }
+    }
+
+    function updateCarbonEmissions() {
+      for (let i = carbonEmissions.length - 1; i >= 0; i--) {
+        let emission = carbonEmissions[i];
+        
+        if (!emission.hit) {
+          // Move left/right
+          emission.x += emission.speed * emission.direction;
+          
+          // Change direction at edges
+          if (emission.x < width/2 - treeWidth/2 || emission.x > width/2 + treeWidth/2 - emission.width) {
+            emission.direction *= -1;
+          }
+          
+          // Check collision with doodler
+          if (doodlerHitsEmission(emission)) {
+            emission.hit = true;
+            emission.animating = true;
+            doodler.velocity = 0; // Stop the character
+          }
+        }
+        
+        // Handle animation
+        if (emission.animating) {
+          emission.frame++;
+          if (emission.frame >= 30) { // Simulate animation completion
+            carbonEmissions.splice(i, 1);
+            gameOver();
+          }
+        }
+      }
+    }
+
+    function drawCarbonEmissions() {
+      for (let emission of carbonEmissions) {
+        if (emission.hit) {
+          // Draw animated version (using frame count)
+          tint(255, 255 - (emission.frame * 8)); // Fade out
+          image(carbonImg, emission.x, emission.y, emission.width, emission.height);
+          noTint();
+        } else {
+          // Draw static first frame
+          image(carbonImg, emission.x, emission.y, emission.width, emission.height);
+        }
+      }
+    }
+
     // Main game-playing function
     function playGame(darkness) {
       // Update stars first
@@ -295,22 +361,10 @@
         rect(0, worldFloorY, width, 20);
       }
 
-      // Hole (Carbon Emissions) Handling - spawn more frequently
-      if (frameCount % 100 === 0 && random() < 0.3) {
-        let candidateX = width / 2 - treeWidth/2 + random(treeWidth);
-        let candidateY = doodler.y - height / 2 - 100;
-        if (canSpawnHoleAt(candidateX, candidateY)) {
-          holeX = candidateX;
-          holeY = candidateY;
-          holeActive = true;
-        }
-      }
-      if (holeActive && holeY < doodler.y - height / 2 - 150) {
-        holeActive = false;
-      }
-      if (holeActive) {
-        image(carbonImg, holeX - carbonImg.width/2, holeY - carbonImg.height/2);
-      }
+      // Spawn and update carbon emissions
+      spawnCarbonEmission();
+      updateCarbonEmissions();
+      drawCarbonEmissions();
 
       // Draw and update doodler and platforms
       doodler.draw();
@@ -341,7 +395,7 @@
       pop();
 
       // Game over conditions
-      if (doodler.y > worldFloorY + doodler.height || (holeActive && doodlerHitsHole())) {
+      if (doodler.y > worldFloorY + doodler.height) {
         gameOver();
       }
     }
@@ -350,23 +404,17 @@
     function gameOver() {
       gameState = "gameover";
       document.getElementById('finalScore').textContent = `You climbed to height: ${score}`;
-      document.getElementById('deathScreen').style.display = 'flex';
+      let deathScreen = document.getElementById('deathScreen');
+      deathScreen.classList.add('show');
     }
 
-    // Prevent holes from spawning on top of a platform
-    function canSpawnHoleAt(x, y) {
-      let holeSize = carbonImg.width;
-      for (let p of platforms) {
-        if (
-          x + holeSize / 2 > p.x &&
-          x - holeSize / 2 < p.x + p.width &&
-          y + holeSize / 2 > p.y &&
-          y - holeSize / 2 < p.y + p.height
-        ) {
-          return false;
-        }
-      }
-      return true;
+    function doodlerHitsEmission(emission) {
+      return (
+        doodler.x + doodler.width > emission.x &&
+        doodler.x < emission.x + emission.width &&
+        doodler.y + doodler.height > emission.y &&
+        doodler.y < emission.y + emission.height
+      );
     }
 
     function startScreen() {
@@ -386,7 +434,7 @@
       doodler = new Doodler();
       platforms = [];
       score = 0;
-      holeActive = false;
+      carbonEmissions = [];
       treeOffset = 0;
       clouds = [];
       starsActive = false;
@@ -398,7 +446,7 @@
         platforms.push(new Platform(randomPlatformX(), worldFloorY - i * gap));
       }
       gameState = "playing";
-      document.getElementById('deathScreen').style.display = 'none';
+      document.getElementById('deathScreen').classList.remove('show');
       document.getElementById('gameInstructions').style.display = 'none';
     }
 
@@ -417,9 +465,9 @@
         this.height = 40;
         this.velocity = 0;
         this.gravity = 0.1;
-        this.jumpForce = 12; // Increased jump force
+        this.jumpForce = 9;
         this.facingRight = true;
-        this.maxVelocity = 12; // Increased max velocity to 12
+        this.maxVelocity = 12; // Max velocity remains 12
       }
       draw() {
         push();
@@ -497,15 +545,6 @@
       }
     }
 
-    function doodlerHitsHole() {
-      return (
-        doodler.x + doodler.width > holeX - carbonImg.width/2 &&
-        doodler.x < holeX + carbonImg.width/2 &&
-        doodler.y + doodler.height > holeY - carbonImg.height/2 &&
-        doodler.y < holeY + carbonImg.height/2
-      );
-    }
-
     // Event listeners
     document.getElementById('startGameBtn').addEventListener('click', function() {
       document.getElementById('gameInstructions').style.display = 'none';
@@ -513,4 +552,4 @@
     });
   </script>
 </body>
-</html>
+</html>  
