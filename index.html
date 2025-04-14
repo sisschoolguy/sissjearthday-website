@@ -825,8 +825,20 @@
         // Set container to maintain aspect ratio
         if (gameNumber === 'squirrel') {
           // For squirrel game (300x450 = 2:3 ratio)
-          gameContainer.style.width = '80vmin';
-          gameContainer.style.height = '120vmin';
+          const aspectRatio = 2/3;
+          const windowWidth = window.innerWidth;
+          const windowHeight = window.innerHeight;
+          
+          // Calculate dimensions based on window size while maintaining aspect ratio
+          if (windowHeight * (2/3) > windowWidth) {
+            // Window is taller than game aspect ratio
+            gameContainer.style.width = '90vw';
+            gameContainer.style.height = `${90 * 1.5}vw`; // 2:3 ratio
+          } else {
+            // Window is wider than game aspect ratio
+            gameContainer.style.height = '90vh';
+            gameContainer.style.width = `${90 / 1.5}vh`; // 2:3 ratio
+          }
         } else {
           // For earth defender (500x400 = 5:4 ratio)
           gameContainer.style.width = '100vmin';
@@ -843,6 +855,16 @@
         fullscreenGameContent.appendChild(gameContainer);
         fullscreenGame.style.display = 'flex';
         currentFullscreenGame = gameNumber;
+        
+        // Resize the game canvas if it's the squirrel game
+        if (gameNumber === 'squirrel') {
+          const canvas = gameContainer.querySelector('canvas');
+          if (canvas) {
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.objectFit = 'contain';
+          }
+        }
       });
     });
 
@@ -873,6 +895,16 @@
         const fullscreenGame = document.getElementById('fullscreenGame');
         fullscreenGame.style.display = 'none';
         currentFullscreenGame = null;
+        
+        // Reset the squirrel game canvas if needed
+        if (currentFullscreenGame === 'squirrel') {
+          const canvas = gameContainer.querySelector('canvas');
+          if (canvas) {
+            canvas.style.width = '';
+            canvas.style.height = '';
+            canvas.style.objectFit = '';
+          }
+        }
       }
     });
 
