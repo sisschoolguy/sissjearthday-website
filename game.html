@@ -15,6 +15,7 @@
       height: 100vh;
       background-color: #f0f0f0;
       font-family: Arial, sans-serif;
+      touch-action: manipulation;
     }
     #gameContainer {
       width: 300px;
@@ -84,13 +85,31 @@
       display: flex;
       opacity: 1;
     }
+    #touchControls {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 100px;
+      display: flex;
+      z-index: 5;
+    }
+    #touchLeft {
+      width: 50%;
+      height: 100%;
+      background-color: transparent;
+    }
+    #touchRight {
+      width: 50%;
+      height: 100%;
+      background-color: transparent;
+    }
   </style>
 </head>
 <body>
   <div id="gameContainer">
     <div id="gameInstructions">
       <h2>Squirrel Climber</h2>
-      <p>Use left/right arrow keys to move.</p>
+      <p>Use left/right arrow keys or touch screen to move.</p>
       <p>Avoid the carbon emissions and don't fall.</p>
       <p>Climb the tree into space!</p>
       <button id="startGameBtn">Start Game</button>
@@ -100,6 +119,10 @@
       <p id="finalScore">You climbed to height: 0</p>
       <p>Better luck next time!</p>
       <button id="restartGameBtn">Play Again</button>
+    </div>
+    <div id="touchControls">
+      <div id="touchLeft"></div>
+      <div id="touchRight"></div>
     </div>
   </div>
 
@@ -120,10 +143,12 @@
     let starSections = [];
     const starSectionHeight = 150; // Height of each star section
     let blowingAway = false;
+    let touchLeft = false;
+    let touchRight = false;
 
     function preload() {
       treeImg = loadImage("https://sissjearthday.tiiny.site/tree_trunk.png");
-      groundImg = loadImage("https://sissjearthday.tiiny.site/tree_trunk.png");
+      groundImg = loadImage("https://sissjearthday.tiiny.site/ground.png");
       platformImg = loadImage("https://sissjearthday.tiiny.site/platform.png");
       squirrelImg = loadImage("https://sissjearthday.tiiny.site/squirrel.png");
       cloudImg = loadImage("https://sissjearthday.tiiny.site/cloud.png");
@@ -146,6 +171,20 @@
 
       // Set up restart button
       document.getElementById('restartGameBtn').addEventListener('click', resetGame);
+      
+      // Touch controls
+      document.getElementById('touchLeft').addEventListener('touchstart', function() {
+        touchLeft = true;
+      });
+      document.getElementById('touchLeft').addEventListener('touchend', function() {
+        touchLeft = false;
+      });
+      document.getElementById('touchRight').addEventListener('touchstart', function() {
+        touchRight = true;
+      });
+      document.getElementById('touchRight').addEventListener('touchend', function() {
+        touchRight = false;
+      });
     }
 
     function draw() {
@@ -268,8 +307,8 @@
         carbonEmissions.push({
           x: width / 2 - treeWidth/2 + random(treeWidth),
           y: doodler.y - height / 2 - 100,
-          width: 80, // Increased from 40 to 80 (2x larger)
-          height: 80, // Increased from 40 to 80 (2x larger)
+          width: 80,
+          height: 80,
           speed: random(1, 3),
           direction: random() < 0.5 ? -1 : 1,
           hit: false
@@ -311,8 +350,8 @@
       for (let emission of carbonEmissions) {
         push();
         translate(emission.x + emission.width/2, emission.y + emission.height/2);
-        if (emission.direction < 0) {
-          scale(-1, 1); // Flip horizontally if moving left
+        if (emission.direction > 0) { // Flip the condition to flip the image
+          scale(-1, 1); // Flip horizontally if moving right
         }
         image(carbonImg, -emission.width/2, -emission.height/2, emission.width, emission.height);
         pop();
@@ -344,10 +383,8 @@
       push();
       translate(0, height / 2 - doodler.y);
 
-      // Draw black rectangle over the ground at bottom of screen
-      fill(0);
-      noStroke();
-      rect(0, worldFloorY, width, 20);
+      // Draw ground image
+      image(groundImg, 0, worldFloorY, width, groundImg.height * (width/groundImg.width));
 
       // Spawn and update carbon emissions
       spawnCarbonEmission();
@@ -463,7 +500,7 @@
         this.gravity = 0.1;
         this.jumpForce = 9;
         this.facingRight = true;
-        this.maxVelocity = 10; 
+        this.maxVelocity = 9; // Decreased from 10 to 9
       }
       draw() {
         push();
@@ -482,13 +519,13 @@
         if (this.x + this.width < 0) this.x = width;
         if (this.x > width) this.x = -this.width;
         
-        // Update facing direction
-        if (keyIsDown(LEFT_ARROW)) this.facingRight = false;
-        if (keyIsDown(RIGHT_ARROW)) this.facingRight = true;
+        // Update facing direction based on touch or keyboard
+        if (keyIsDown(LEFT_ARROW) || touchLeft) this.facingRight = false;
+        if (keyIsDown(RIGHT_ARROW) || touchRight) this.facingRight = true;
         
         this.velocity += this.gravity;
         
-        // Apply velocity cap (12)
+        // Apply velocity cap (now 9 instead of 10)
         if (this.velocity > this.maxVelocity) {
           this.velocity = this.maxVelocity;
         } else if (this.velocity < -this.maxVelocity) {
@@ -497,11 +534,11 @@
         
         this.y += this.velocity;
         
-        // Horizontal movement
-        if (keyIsDown(LEFT_ARROW)) {
+        // Horizontal movement (touch or keyboard)
+        if (keyIsDown(LEFT_ARROW) || touchLeft) {
           this.x -= 6;
         }
-        if (keyIsDown(RIGHT_ARROW)) {
+        if (keyIsDown(RIGHT_ARROW) || touchRight) {
           this.x += 6;
         }
         
