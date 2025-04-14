@@ -110,7 +110,7 @@
     let score = 0;
     let gameState = "start"; // "start", "playing", "gameover"
     let carbonEmissions = [];
-    let treeImg, platformImg, squirrelImg, carbonImg, cloudImg, starsImg;
+    let treeImg, platformImg, squirrelImg, carbonImg, cloudImg, starsImg, co2Gif, groundImg;
     const worldFloorY = 550; // Extended floor
     let treeOffset = 0;
     const treeWidth = 250; // Wider tree (was 200)
@@ -119,21 +119,17 @@
     let starsActive = false;
     let starSections = [];
     const starSectionHeight = 150; // Height of each star section
-    let smokeFrames = [];
-    let currentSmokeFrame = 0;
-    let smokeAnimating = false;
-    let smokeAnimationComplete = false;
+    let blowingAway = false;
 
     function preload() {
       treeImg = loadImage("https://sissjearthday.tiiny.site/tree_trunk.png");
+      groundImg = loadImage("https://sissjearthday.tiiny.site/tree_trunk.png");
       platformImg = loadImage("https://sissjearthday.tiiny.site/platform.png");
       squirrelImg = loadImage("https://sissjearthday.tiiny.site/squirrel.png");
       cloudImg = loadImage("https://sissjearthday.tiiny.site/cloud.png");
       starsImg = loadImage("https://sissjearthday.tiiny.site/stars.png");
-      
-      // Load smoke GIF frames (we'll simulate this with a sprite sheet)
-      // For this example, we'll use a single image as a placeholder
-      carbonImg = loadImage("https://sissjearthday.tiiny.site/smoke-gif.gif");
+      carbonImg = loadImage("https://sissjearthday.tiiny.site/co2.png");
+      co2Gif = loadImage("https://sissjearthday.tiiny.site/co2-gif.gif");
     }
 
     function setup() {
@@ -272,12 +268,10 @@
         carbonEmissions.push({
           x: width / 2 - treeWidth/2 + random(treeWidth),
           y: doodler.y - height / 2 - 100,
-          width: 40,
-          height: 40,
+          width: 80, // Increased from 40 to 80 (2x larger)
+          height: 80, // Increased from 40 to 80 (2x larger)
           speed: random(1, 3),
           direction: random() < 0.5 ? -1 : 1,
-          frame: 0,
-          animating: false,
           hit: false
         });
       }
@@ -299,33 +293,29 @@
           // Check collision with doodler
           if (doodlerHitsEmission(emission)) {
             emission.hit = true;
-            emission.animating = true;
-            doodler.velocity = 0; // Stop the character
+            doodler.velocity = -20; // Blow the character upwards
+            doodler.gravity = 0.05; // Reduce gravity to make it float away
+            blowingAway = true;
+            carbonEmissions.splice(i, 1); // Remove the emission immediately
           }
         }
-        
-        // Handle animation
-        if (emission.animating) {
-          emission.frame++;
-          if (emission.frame >= 30) { // Simulate animation completion
-            carbonEmissions.splice(i, 1);
-            gameOver();
-          }
-        }
+      }
+      
+      // If blowing away, check if character is off screen
+      if (blowingAway && doodler.y + doodler.height < -50) {
+        gameOver();
       }
     }
 
     function drawCarbonEmissions() {
       for (let emission of carbonEmissions) {
-        if (emission.hit) {
-          // Draw animated version (using frame count)
-          tint(255, 255 - (emission.frame * 8)); // Fade out
-          image(carbonImg, emission.x, emission.y, emission.width, emission.height);
-          noTint();
-        } else {
-          // Draw static first frame
-          image(carbonImg, emission.x, emission.y, emission.width, emission.height);
+        push();
+        translate(emission.x + emission.width/2, emission.y + emission.height/2);
+        if (emission.direction < 0) {
+          scale(-1, 1); // Flip horizontally if moving left
         }
+        image(carbonImg, -emission.width/2, -emission.height/2, emission.width, emission.height);
+        pop();
       }
     }
 
@@ -354,12 +344,10 @@
       push();
       translate(0, height / 2 - doodler.y);
 
-      // Draw moving floor (only visible when score is 0)
-      if (score === 0) {
-        fill(210, 180, 140);
-        noStroke();
-        rect(0, worldFloorY, width, 20);
-      }
+      // Draw black rectangle over the ground at bottom of screen
+      fill(0);
+      noStroke();
+      rect(0, worldFloorY, width, 20);
 
       // Spawn and update carbon emissions
       spawnCarbonEmission();
@@ -368,7 +356,14 @@
 
       // Draw and update doodler and platforms
       doodler.draw();
-      doodler.update(platforms);
+      if (!blowingAway) {
+        doodler.update(platforms);
+      } else {
+        // When blowing away, just apply gravity
+        doodler.y += doodler.velocity;
+        doodler.velocity += doodler.gravity;
+      }
+      
       for (let platform of platforms) {
         platform.draw();
       }
@@ -439,6 +434,7 @@
       clouds = [];
       starsActive = false;
       starSections = [];
+      blowingAway = false;
       
       let platformCount = 6;
       gap = (height / 4) * platformGapMultiplier; // Use the increased gap
@@ -552,4 +548,4 @@
     });
   </script>
 </body>
-</html>  
+</html>
