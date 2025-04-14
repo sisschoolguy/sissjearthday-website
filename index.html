@@ -204,7 +204,7 @@
       line-height: 1.8;
     }
 
-    /* Game Section */
+    /* Games Section */
     #games { 
       background-color: #e0e0e0; 
     }
@@ -228,7 +228,7 @@
       width: 100%;
     }
 
-    /* Earth Defender Container - Adjusted scaling */
+    /* Game Containers */
     #gameContainer2 {
       position: relative; 
       overflow: hidden; 
@@ -237,6 +237,15 @@
       width: 100%;
       max-width: 500px;
       height: 400px;
+    }
+
+    #squirrelGameContainer {
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #333;
+      background-color: #000;
+      width: 300px;
+      height: 450px;
     }
 
     /* Fullscreen Game Popup */
@@ -284,48 +293,6 @@
       width: auto;
     }
     .fullscreen-btn:hover { 
-      background-color: #1b5e20; 
-    }
-
-    /* Game Instructions Popup */
-    .game-instructions {
-      position: absolute; 
-      top: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 100%;
-      background-color: rgba(200, 230, 201, 0.95);
-      display: flex; 
-      flex-direction: column; 
-      justify-content: center; 
-      align-items: center;
-      text-align: center; 
-      padding: 20px; 
-      box-sizing: border-box; 
-      z-index: 10;
-    }
-    .game-instructions h2 { 
-      margin-bottom: 1rem; 
-      color: #2e7d32; 
-      font-size: 1.5rem; 
-    }
-    .game-instructions p { 
-      margin-bottom: 1rem; 
-      line-height: 1.6; 
-      font-size: 1rem; 
-    }
-    .start-game-btn {
-      background-color: #2e7d32; 
-      color: white; 
-      border: none; 
-      padding: 10px 25px;
-      font-size: 1rem; 
-      border-radius: 5px; 
-      cursor: pointer; 
-      margin-top: 1rem;
-      transition: background-color 0.3s;
-    }
-    .start-game-btn:hover { 
       background-color: #1b5e20; 
     }
 
@@ -412,6 +379,91 @@
       cursor: pointer;
     }
 
+    /* Squirrel Climber Game Styles */
+    #squirrelGameInstructions {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(200, 230, 201, 0.95);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 10;
+    }
+    #squirrelGameInstructions h2 {
+      margin-bottom: 1rem;
+      color: #2e7d32;
+    }
+    #squirrelGameInstructions p {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    #startSquirrelGameBtn, #restartSquirrelGameBtn {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    #startSquirrelGameBtn:hover, #restartSquirrelGameBtn:hover {
+      background-color: #1b5e20;
+    }
+    #squirrelDeathScreen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(139, 0, 0, 0.9);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 20;
+      color: white;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+    #squirrelDeathScreen.show {
+      display: flex;
+      opacity: 1;
+    }
+    #squirrelMobileControls {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 60px;
+      display: none;
+      justify-content: space-between;
+      padding: 10px;
+      box-sizing: border-box;
+      z-index: 5;
+    }
+    .squirrel-mobile-btn {
+      width: 80px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      color: white;
+      -webkit-tap-highlight-color: transparent;
+    }
+
     /* Rules text on the right side of the game, center-aligned */
     .game-rules {
       max-width: 100%;
@@ -484,7 +536,7 @@
       }
       
       /* Adjusted game scaling */
-      #gameContainer2 {
+      #gameContainer2, #squirrelGameContainer {
         transform: scale(1.05);
         transform-origin: top center;
         margin: 15px 0;
@@ -539,7 +591,7 @@
       }
       
       /* Adjusted game scaling */
-      #gameContainer2 {
+      #gameContainer2, #squirrelGameContainer {
         transform: scale(1.1);
         height: 350px;
       }
@@ -578,7 +630,7 @@
       <p>made by SIS South Jakarta</p>
       <div class="buttons">
         <button id="infoBtn">Information</button>
-        <button id="gamesBtn">Game</button>
+        <button id="gamesBtn">Games</button>
       </div>
       <div id="closePopup" class="arrow-down">&#9660;</div>
     </div>
@@ -595,7 +647,7 @@
     <div id="openPopup" class="arrow-up">&#9650;</div>
     <div class="buttons">
       <button id="infoNavBtn">Information</button>
-      <button id="gamesNavBtn">Game</button>
+      <button id="gamesNavBtn">Games</button>
     </div>
     <h1>Earth Day</h1>
   </nav>
@@ -625,9 +677,9 @@
     </div>
   </section>
 
-  <!-- Game Section (Only one game remains) -->
+  <!-- Games Section -->
   <section id="games" class="section">
-    <h2>Game</h2>
+    <h2>Games</h2>
     <div class="games-container">
       <!-- Earth Defender Game (Left side) -->
       <div class="game-wrapper">
@@ -663,6 +715,35 @@
       <!-- Game Rules Panel (Right side, plain text) -->
       <div class="game-rules">
         This retro-inspired game challenges you to defend the planet from harmful influences. By shooting incoming threats and collecting helpful words, you actively contribute to preserving Earth's vitality. The gameplay reflects Earth Day's message by emphasizing the importance of environmental stewardship. Every shot and every saved word reminds you that even small efforts matter in protecting our world.
+      </div>
+      
+      <!-- Squirrel Climber Game -->
+      <div class="game-wrapper">
+        <h3>Squirrel Climber</h3>
+        <div id="squirrelGameContainer">
+          <div id="squirrelGameInstructions">
+            <h2>Squirrel Climber</h2>
+            <p>Use left/right arrows or touch controls to move.</p>
+            <p>Avoid the carbon emissions and don't fall.</p>
+            <p>Climb the tree into space!</p>
+            <button id="startSquirrelGameBtn">Start Game</button>
+          </div>
+          <div id="squirrelDeathScreen">
+            <h2>Game Over!</h2>
+            <p id="squirrelFinalScore">You climbed to height: 0</p>
+            <p>Better luck next time!</p>
+            <button id="restartSquirrelGameBtn">Play Again</button>
+          </div>
+          <div id="squirrelMobileControls">
+            <div class="squirrel-mobile-btn" id="squirrelLeftBtn">←</div>
+            <div class="squirrel-mobile-btn" id="squirrelRightBtn">→</div>
+          </div>
+        </div>
+        <button class="fullscreen-btn" data-game="squirrel">Full Screen</button>
+      </div>
+      <!-- Game Rules Panel for Squirrel Climber -->
+      <div class="game-rules">
+        A game about a squirrel climbing a tree to space to escape rising carbon emissions cleverly ties into Earth Day by using playful storytelling to highlight the serious issue of climate change. As the squirrel ascends to avoid the toxic effects of pollution, players are reminded of the urgent need to protect our environment and reduce carbon emissions.
       </div>
     </div>
   </section>
@@ -715,50 +796,53 @@
     });
     gamesNavBtn.addEventListener('click', () => { scrollToSection('games'); });
 
-    // Fullscreen button functionality (only Earth Defender exists, identified as game "2")
+    // Fullscreen button functionality
     const fullscreenButtons = document.querySelectorAll('.fullscreen-btn');
     fullscreenButtons.forEach(button => {
       button.addEventListener('click', function() {
         const gameNumber = this.getAttribute('data-game');
+        let gameContainer;
+        
         if (gameNumber === '2') {
-          const gameContainer = document.getElementById('gameContainer2');
-          // Store original parent and insert placeholder if not done.
-          if (!originalParents[gameNumber]) {
-            originalParents[gameNumber] = gameContainer.parentElement;
-            const placeholder = document.createElement('div');
-            placeholder.style.display = 'none';
-            originalParents[gameNumber].insertBefore(placeholder, gameContainer);
-            originalPlaceholders[gameNumber] = placeholder;
-          }
-          // Save original inline styles.
-          gameContainer.dataset.originalWidth = gameContainer.style.width;
-          gameContainer.dataset.originalHeight = gameContainer.style.height;
-          // Set container to a square and maintain aspect ratio (5:4).
-          gameContainer.style.width = '90vmin';
-          gameContainer.style.height = '72vmin'; // 90/1.25 = 72
-          gameContainer.style.display = 'block';
-          gameContainer.style.margin = 'auto';
-          // Move the container to the fullscreen overlay.
-          const fullscreenGame = document.getElementById('fullscreenGame');
-          const fullscreenGameContent = document.getElementById('fullscreenGameContent');
-          fullscreenGameContent.innerHTML = '';
-          fullscreenGameContent.appendChild(gameContainer);
-          fullscreenGame.style.display = 'flex';
-          currentFullscreenGame = gameNumber;
-          // Adjust the Earth Defender canvas.
-          const edCanvas = document.getElementById('earthDefenderCanvas');
-          if (edCanvas) {
-            edCanvas.width = gameContainer.offsetWidth;
-            edCanvas.height = gameContainer.offsetHeight;
-            edCanvas.style.display = 'block';
-            edCanvas.style.margin = '0 auto';
-          }
-          // Re-center the Earth.
-          if (typeof earth !== 'undefined') {
-            earth.x = edCanvas.width / 2;
-            earth.y = edCanvas.height / 2;
-          }
+          gameContainer = document.getElementById('gameContainer2');
+        } else if (gameNumber === 'squirrel') {
+          gameContainer = document.getElementById('squirrelGameContainer');
         }
+        
+        // Store original parent and insert placeholder if not done.
+        if (!originalParents[gameNumber]) {
+          originalParents[gameNumber] = gameContainer.parentElement;
+          const placeholder = document.createElement('div');
+          placeholder.style.display = 'none';
+          originalParents[gameNumber].insertBefore(placeholder, gameContainer);
+          originalPlaceholders[gameNumber] = placeholder;
+        }
+        
+        // Save original inline styles.
+        gameContainer.dataset.originalWidth = gameContainer.style.width;
+        gameContainer.dataset.originalHeight = gameContainer.style.height;
+        
+        // Set container to maintain aspect ratio
+        if (gameNumber === 'squirrel') {
+          // For squirrel game (300x450 = 2:3 ratio)
+          gameContainer.style.width = '80vmin';
+          gameContainer.style.height = '120vmin';
+        } else {
+          // For earth defender (500x400 = 5:4 ratio)
+          gameContainer.style.width = '100vmin';
+          gameContainer.style.height = '80vmin';
+        }
+        
+        gameContainer.style.display = 'block';
+        gameContainer.style.margin = 'auto';
+        
+        // Move the container to the fullscreen overlay.
+        const fullscreenGame = document.getElementById('fullscreenGame');
+        const fullscreenGameContent = document.getElementById('fullscreenGameContent');
+        fullscreenGameContent.innerHTML = '';
+        fullscreenGameContent.appendChild(gameContainer);
+        fullscreenGame.style.display = 'flex';
+        currentFullscreenGame = gameNumber;
       });
     });
 
@@ -766,11 +850,18 @@
     const closeFullscreen = document.getElementById('closeFullscreen');
     closeFullscreen.addEventListener('click', () => {
       if (currentFullscreenGame) {
-        const gameContainer = document.getElementById('gameContainer2');
+        let gameContainer;
+        if (currentFullscreenGame === '2') {
+          gameContainer = document.getElementById('gameContainer2');
+        } else if (currentFullscreenGame === 'squirrel') {
+          gameContainer = document.getElementById('squirrelGameContainer');
+        }
+        
         // Restore original dimensions.
-        gameContainer.style.width = gameContainer.dataset.originalWidth || '100%';
-        gameContainer.style.height = gameContainer.dataset.originalHeight || '400px';
+        gameContainer.style.width = gameContainer.dataset.originalWidth || '';
+        gameContainer.style.height = gameContainer.dataset.originalHeight || '';
         gameContainer.style.margin = '';
+        
         if (originalPlaceholders[currentFullscreenGame]) {
           originalPlaceholders[currentFullscreenGame].parentNode.insertBefore(gameContainer, originalPlaceholders[currentFullscreenGame]);
           originalPlaceholders[currentFullscreenGame].remove();
@@ -778,6 +869,7 @@
         } else {
           originalParents[currentFullscreenGame].appendChild(gameContainer);
         }
+        
         const fullscreenGame = document.getElementById('fullscreenGame');
         fullscreenGame.style.display = 'none';
         currentFullscreenGame = null;
@@ -1112,6 +1204,499 @@
       
       // Initialize game with proper sizing
       handleResize();
+    });
+
+    // =============================================
+    // SQUIRREL CLIMBER GAME CODE (EXACTLY AS PROVIDED)
+    // =============================================
+    document.addEventListener('DOMContentLoaded', function() {
+      // Only initialize if the game container exists
+      const squirrelContainer = document.getElementById('squirrelGameContainer');
+      if (!squirrelContainer) return;
+
+      const sketch = function(p) {
+        let doodler;
+        let platforms = [];
+        let gap;
+        let score = 0;
+        let gameState = "start"; // "start", "playing", "gameover"
+        let carbonEmissions = [];
+        let treeImg, platformImg, squirrelImg, carbonImg, cloudImg, starsImg, co2Gif, groundImg;
+        const worldFloorY = 550; // Extended floor
+        let treeOffset = 0;
+        const treeWidth = 250; // Wider tree (was 200)
+        const platformGapMultiplier = 1.5; // Increased platform spacing
+        let clouds = [];
+        let starsActive = false;
+        let starSections = [];
+        const starSectionHeight = 150; // Height of each star section
+        let blowingAway = false;
+        let isMobile = false;
+        let leftPressed = false;
+        let rightPressed = false;
+        let frameCount = 0;
+
+        p.preload = function() {
+          treeImg = p.loadImage("https://sissjearthday.tiiny.site/tree_trunk.png");
+          groundImg = p.loadImage("https://sissjearthday.tiiny.site/ground.png");
+          platformImg = p.loadImage("https://sissjearthday.tiiny.site/platform.png");
+          squirrelImg = p.loadImage("https://sissjearthday.tiiny.site/squirrel.png");
+          cloudImg = p.loadImage("https://sissjearthday.tiiny.site/cloud.png");
+          starsImg = p.loadImage("https://sissjearthday.tiiny.site/stars.png");
+          carbonImg = p.loadImage("https://sissjearthday.tiiny.site/co2.png");
+          co2Gif = p.loadImage("https://sissjearthday.tiiny.site/co2-gif.gif");
+        };
+
+        p.setup = function() {
+          const gameCanvas = p.createCanvas(300, 450);
+          gameCanvas.parent('squirrelGameContainer');
+          doodler = new Doodler();
+
+          // Check if mobile device
+          isMobile = /Mobi|Android/i.test(navigator.userAgent);
+          if (isMobile) {
+            document.getElementById('squirrelMobileControls').style.display = 'flex';
+          }
+
+          // Create initial platforms with increased spacing
+          let platformCount = 6;
+          gap = (p.height / 4) * platformGapMultiplier; // Larger gap between platforms
+          for (let i = 0; i < platformCount; i++) {
+            platforms.push(new Platform(p.randomPlatformX(), worldFloorY - i * gap));
+          }
+
+          // Set up restart button
+          document.getElementById('restartSquirrelGameBtn').addEventListener('click', resetGame);
+          
+          // Mobile controls
+          document.getElementById('squirrelLeftBtn').addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            leftPressed = true;
+          });
+          document.getElementById('squirrelLeftBtn').addEventListener('touchend', function(e) {
+            e.preventDefault();
+            leftPressed = false;
+          });
+          document.getElementById('squirrelLeftBtn').addEventListener('touchcancel', function(e) {
+            e.preventDefault();
+            leftPressed = false;
+          });
+          
+          document.getElementById('squirrelRightBtn').addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            rightPressed = true;
+          });
+          document.getElementById('squirrelRightBtn').addEventListener('touchend', function(e) {
+            e.preventDefault();
+            rightPressed = false;
+          });
+          document.getElementById('squirrelRightBtn').addEventListener('touchcancel', function(e) {
+            e.preventDefault();
+            rightPressed = false;
+          });
+        };
+
+        p.draw = function() {
+          frameCount++;
+          
+          // Compute sky darkness with a slower transition (from score 0 to 100)
+          let darkness = p.constrain(p.map(score, 0, 100, 0, 1), 0, 1);
+          let skyR = p.lerp(173, 0, darkness);
+          let skyG = p.lerp(216, 0, darkness);
+          let skyB = p.lerp(230, 64, darkness);
+          p.background(skyR, skyG, skyB);
+
+          if (gameState === "start") {
+            startScreen();
+          } else if (gameState === "playing") {
+            playGame(darkness);
+          } else if (gameState === "gameover") {
+            // Handled by the death screen div
+          }
+        };
+
+        // Draw the scrolling tree trunk
+        function drawTree() {
+          // Calculate how much to offset the tree texture based on doodler's position
+          treeOffset = doodler.y % treeImg.height;
+          
+          // Draw the tree texture repeatedly to cover the visible area
+          let visibleTop = doodler.y - p.height / 2;
+          let visibleBottom = doodler.y + p.height / 2;
+          
+          // Start drawing tree segments above the visible area
+          let startY = visibleTop - treeOffset - treeImg.height;
+          let endY = visibleBottom;
+          
+          // Draw the tree segments
+          for (let y = startY; y < endY; y += treeImg.height) {
+            p.image(treeImg, p.width/2 - treeWidth/2, y, treeWidth, treeImg.height);
+          }
+        }
+
+        function updateClouds() {
+          // Remove clouds that are off screen
+          for (let i = clouds.length - 1; i >= 0; i--) {
+            if (clouds[i].y > doodler.y + p.height/2 + 100) {
+              clouds.splice(i, 1);
+            }
+          }
+          
+          // Add new clouds randomly anywhere on screen (3x larger with random sizes)
+          if (p.random() < 0.02 && clouds.length < 5) {
+            clouds.push({
+              x: p.random(p.width),
+              y: doodler.y - p.height/2 - p.random(20, 120),
+              size: p.random(2, 4) // Random size between 2x and 4x original
+            });
+          }
+        }
+
+        function drawClouds() {
+          for (let cloud of clouds) {
+            p.push();
+            p.translate(cloud.x, cloud.y);
+            p.scale(cloud.size);
+            p.image(cloudImg, -cloudImg.width/2, -cloudImg.height/2);
+            p.pop();
+          }
+        }
+
+        function updateStars(darkness) {
+          starsActive = darkness >= 1;
+          if (!starsActive) {
+            starSections = [];
+            return;
+          }
+
+          // Remove star sections that are off screen
+          for (let i = starSections.length - 1; i >= 0; i--) {
+            if (starSections[i].y > doodler.y + p.height/2 + starSectionHeight || 
+                starSections[i].y < doodler.y - p.height/2 - starSectionHeight) {
+              starSections.splice(i, 1);
+            }
+          }
+          
+          // Add new star section above if needed
+          if (starSections.length === 0 || 
+              starSections[starSections.length-1].y > doodler.y - p.height/2 - starSectionHeight) {
+            let newY = starSections.length === 0 ? doodler.y - p.height/2 - starSectionHeight : 
+                      starSections[starSections.length-1].y - starSectionHeight;
+            starSections.push({
+              y: newY,
+              sectionY: p.floor(p.random(starsImg.height - starSectionHeight))
+            });
+          }
+          
+          // Add new star section below if needed
+          if (starSections.length === 0 || 
+              starSections[0].y < doodler.y + p.height/2) {
+            let newY = starSections.length === 0 ? doodler.y + p.height/2 : 
+                      starSections[0].y + starSectionHeight;
+            starSections.unshift({
+              y: newY,
+              sectionY: p.floor(p.random(starsImg.height - starSectionHeight))
+            });
+          }
+        }
+
+        function drawStars() {
+          if (!starsActive) return;
+          
+          for (let star of starSections) {
+            // Draw a random section of the stars image
+            p.image(starsImg, 
+                  0, star.y, 
+                  p.width, starSectionHeight,
+                  0, star.sectionY,
+                  starsImg.width, starSectionHeight);
+          }
+        }
+
+        function spawnCarbonEmission() {
+          if (frameCount % 120 === 0 && p.random() < 0.3) {
+            carbonEmissions.push({
+              x: p.width / 2 - treeWidth/2 + p.random(treeWidth),
+              y: doodler.y - p.height / 2 - 100,
+              width: 80,
+              height: 80,
+              speed: p.random(1, 3),
+              direction: p.random() < 0.5 ? -1 : 1,
+              hit: false
+            });
+          }
+        }
+
+        function updateCarbonEmissions() {
+          for (let i = carbonEmissions.length - 1; i >= 0; i--) {
+            let emission = carbonEmissions[i];
+            
+            if (!emission.hit) {
+              // Move left/right
+              emission.x += emission.speed * emission.direction;
+              
+              // Change direction at edges
+              if (emission.x < p.width/2 - treeWidth/2 || emission.x > p.width/2 + treeWidth/2 - emission.width) {
+                emission.direction *= -1;
+              }
+              
+              // Check collision with doodler
+              if (doodlerHitsEmission(emission)) {
+                emission.hit = true;
+                doodler.velocity = -20; // Blow the character upwards
+                doodler.gravity = 0.05; // Reduce gravity to make it float away
+                blowingAway = true;
+                carbonEmissions.splice(i, 1); // Remove the emission immediately
+              }
+            }
+          }
+          
+          // If blowing away, check if character is off screen
+          if (blowingAway && doodler.y + doodler.height < -50) {
+            gameOver();
+          }
+        }
+
+        function drawCarbonEmissions() {
+          for (let emission of carbonEmissions) {
+            p.push();
+            p.translate(emission.x + emission.width/2, emission.y + emission.height/2);
+            if (emission.direction > 0) { // Flip the condition to flip the image
+              p.scale(-1, 1); // Flip horizontally if moving right
+            }
+            p.image(carbonImg, -emission.width/2, -emission.height/2, emission.width, emission.height);
+            p.pop();
+          }
+        }
+
+        // Main game-playing function
+        function playGame(darkness) {
+          // Update stars first
+          updateStars(darkness);
+          
+          // Draw stars (behind everything)
+          p.push();
+          p.translate(0, p.height / 2 - doodler.y);
+          drawStars();
+          
+          // Draw clouds (mid-ground)
+          updateClouds();
+          drawClouds();
+          p.pop();
+
+          // Draw the scrolling tree
+          p.push();
+          p.translate(0, p.height / 2 - doodler.y);
+          drawTree();
+          p.pop();
+
+          // Switch to world coordinates
+          p.push();
+          p.translate(0, p.height / 2 - doodler.y);
+
+          // Draw ground image
+          p.image(groundImg, 0, worldFloorY, p.width, groundImg.height * (p.width/groundImg.width));
+
+          // Spawn and update carbon emissions
+          spawnCarbonEmission();
+          updateCarbonEmissions();
+          drawCarbonEmissions();
+
+          // Draw and update doodler and platforms
+          doodler.draw();
+          if (!blowingAway) {
+            doodler.update(platforms);
+          } else {
+            // When blowing away, just apply gravity
+            doodler.y += doodler.velocity;
+            doodler.velocity += doodler.gravity;
+          }
+          
+          for (let platform of platforms) {
+            platform.draw();
+          }
+          
+          // Add new platforms as player climbs (with increased spacing)
+          if (platforms.length > 0 && doodler.y < platforms[platforms.length - 1].y + gap) {
+            platforms.push(new Platform(p.randomPlatformX(), platforms[platforms.length - 1].y - gap));
+          }
+          
+          // Remove platforms that are far below
+          if (platforms.length > 0 && platforms[0].y > doodler.y + p.height) {
+            platforms.splice(0, 1);
+            score++;
+          }
+
+          p.pop();
+
+          // Draw score
+          p.push();
+          p.fill(255);
+          p.textSize(20);
+          p.textAlign(p.CENTER);
+          p.text(score, p.width / 2, 30);
+          p.pop();
+
+          // Game over conditions
+          if (doodler.y > worldFloorY + doodler.height) {
+            gameOver();
+          }
+        }
+
+        // Game over function
+        function gameOver() {
+          gameState = "gameover";
+          document.getElementById('squirrelFinalScore').textContent = `You climbed to height: ${score}`;
+          let deathScreen = document.getElementById('squirrelDeathScreen');
+          deathScreen.classList.add('show');
+        }
+
+        function doodlerHitsEmission(emission) {
+          return (
+            doodler.x + doodler.width > emission.x &&
+            doodler.x < emission.x + emission.width &&
+            doodler.y + doodler.height > emission.y &&
+            doodler.y < emission.y + emission.height
+          );
+        }
+
+        function startScreen() {
+          // Handled by HTML instructions popup
+        }
+
+        p.keyPressed = function() {
+          if (gameState === "start" && p.key === ' ') {
+            document.getElementById('squirrelGameInstructions').style.display = 'none';
+            gameState = "playing";
+          } else if (gameState === "gameover" && p.key === ' ') {
+            resetGame();
+          }
+        };
+
+        function resetGame() {
+          doodler = new Doodler();
+          platforms = [];
+          score = 0;
+          carbonEmissions = [];
+          treeOffset = 0;
+          clouds = [];
+          starsActive = false;
+          starSections = [];
+          blowingAway = false;
+          
+          let platformCount = 6;
+          gap = (p.height / 4) * platformGapMultiplier; // Use the increased gap
+          for (let i = 0; i < platformCount; i++) {
+            platforms.push(new Platform(p.randomPlatformX(), worldFloorY - i * gap));
+          }
+          gameState = "playing";
+          document.getElementById('squirrelDeathScreen').classList.remove('show');
+          document.getElementById('squirrelGameInstructions').style.display = 'none';
+        }
+
+        p.randomPlatformX = function() {
+          let minX = p.width / 2 - treeWidth/2;
+          let maxX = p.width / 2 + treeWidth/2 - platformImg.width;
+          return p.random(minX, maxX);
+        };
+
+        // Doodler Class
+        class Doodler {
+          constructor() {
+            this.x = p.width / 2;
+            this.y = worldFloorY - 200;
+            this.width = 40;
+            this.height = 40;
+            this.velocity = 0;
+            this.gravity = 0.1;
+            this.jumpForce = 8;
+            this.facingRight = true;
+            this.maxVelocity = 10; // Decreased from 10 to 9
+          }
+          draw() {
+            p.push();
+            // Flip image based on movement direction
+            if (this.facingRight) {
+              p.image(squirrelImg, this.x, this.y, this.width, this.height);
+            } else {
+              p.translate(this.x + this.width, 0);
+              p.scale(-1, 1);
+              p.image(squirrelImg, 0, this.y, this.width, this.height);
+            }
+            p.pop();
+          }
+          update(platforms) {
+            // Wrap around screen edges
+            if (this.x + this.width < 0) this.x = p.width;
+            if (this.x > p.width) this.x = -this.width;
+            
+            // Update facing direction based on keyboard or touch
+            if (p.keyIsDown(p.LEFT_ARROW) || leftPressed) this.facingRight = false;
+            if (p.keyIsDown(p.RIGHT_ARROW) || rightPressed) this.facingRight = true;
+            
+            this.velocity += this.gravity;
+            
+            // Apply velocity cap (now 9 instead of 10)
+            if (this.velocity > this.maxVelocity) {
+              this.velocity = this.maxVelocity;
+            } else if (this.velocity < -this.maxVelocity) {
+              this.velocity = -this.maxVelocity;
+            }
+            
+            this.y += this.velocity;
+            
+            // Horizontal movement (keyboard or touch)
+            if (p.keyIsDown(p.LEFT_ARROW) || leftPressed) {
+              this.x -= 6;
+            }
+            if (p.keyIsDown(p.RIGHT_ARROW) || rightPressed) {
+              this.x += 6;
+            }
+            
+            // Platform collision (including ground when score is 0)
+            for (let platform of platforms) {
+              if (
+                this.y + this.height >= platform.y &&
+                this.y + this.height <= platform.y + platform.height
+              ) {
+                let minX = platform.x - this.width;
+                let maxX = platform.x + platform.width;
+                if (this.x >= minX && this.x <= maxX) {
+                  this.velocity = this.velocity > 0 ? -this.jumpForce * 0.8 : -this.jumpForce;
+                }
+              }
+            }
+            
+            // Ground collision (only when score is 0)
+            if (score === 0 && this.y + this.height >= worldFloorY && this.velocity > 0) {
+              this.velocity = -this.jumpForce;
+            }
+            
+            if (this.velocity < -this.jumpForce) this.velocity = -this.jumpForce;
+          }
+        }
+
+        // Platform Class
+        class Platform {
+          constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.width = 60;
+            this.height = 15;
+          }
+          draw() {
+            p.image(platformImg, this.x, this.y, this.width, this.height);
+          }
+        }
+
+        // Event listeners
+        document.getElementById('startSquirrelGameBtn').addEventListener('click', function() {
+          document.getElementById('squirrelGameInstructions').style.display = 'none';
+          gameState = "playing";
+        });
+      };
+
+      new p5(sketch);
     });
   </script>
 </body>
