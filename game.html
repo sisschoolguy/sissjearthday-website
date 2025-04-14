@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Squirrel Climber Game</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
   <style>
@@ -16,6 +16,12 @@
       background-color: #f0f0f0;
       font-family: Arial, sans-serif;
       touch-action: manipulation;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
     #gameContainer {
       width: 300px;
@@ -85,23 +91,33 @@
       display: flex;
       opacity: 1;
     }
-    #touchControls {
+    #mobileControls {
       position: absolute;
       bottom: 0;
       width: 100%;
-      height: 100px;
-      display: flex;
+      height: 60px;
+      display: none;
+      justify-content: space-between;
+      padding: 10px;
+      box-sizing: border-box;
       z-index: 5;
     }
-    #touchLeft {
-      width: 50%;
-      height: 100%;
-      background-color: transparent;
+    .mobile-btn {
+      width: 80px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      color: white;
+      -webkit-tap-highlight-color: transparent;
     }
-    #touchRight {
-      width: 50%;
-      height: 100%;
-      background-color: transparent;
+    @media (hover: none) {
+      #mobileControls {
+        display: flex;
+      }
     }
   </style>
 </head>
@@ -109,7 +125,7 @@
   <div id="gameContainer">
     <div id="gameInstructions">
       <h2>Squirrel Climber</h2>
-      <p>Use left/right arrow keys or touch screen to move.</p>
+      <p>Use left/right arrows or touch controls to move.</p>
       <p>Avoid the carbon emissions and don't fall.</p>
       <p>Climb the tree into space!</p>
       <button id="startGameBtn">Start Game</button>
@@ -120,9 +136,9 @@
       <p>Better luck next time!</p>
       <button id="restartGameBtn">Play Again</button>
     </div>
-    <div id="touchControls">
-      <div id="touchLeft"></div>
-      <div id="touchRight"></div>
+    <div id="mobileControls">
+      <div class="mobile-btn" id="leftBtn">←</div>
+      <div class="mobile-btn" id="rightBtn">→</div>
     </div>
   </div>
 
@@ -143,8 +159,9 @@
     let starSections = [];
     const starSectionHeight = 150; // Height of each star section
     let blowingAway = false;
-    let touchLeft = false;
-    let touchRight = false;
+    let isMobile = false;
+    let leftPressed = false;
+    let rightPressed = false;
 
     function preload() {
       treeImg = loadImage("https://sissjearthday.tiiny.site/tree_trunk.png");
@@ -162,6 +179,12 @@
       gameCanvas.parent('gameContainer');
       doodler = new Doodler();
 
+      // Check if mobile device
+      isMobile = /Mobi|Android/i.test(navigator.userAgent);
+      if (isMobile) {
+        document.getElementById('mobileControls').style.display = 'flex';
+      }
+
       // Create initial platforms with increased spacing
       let platformCount = 6;
       gap = (height / 4) * platformGapMultiplier; // Larger gap between platforms
@@ -172,18 +195,31 @@
       // Set up restart button
       document.getElementById('restartGameBtn').addEventListener('click', resetGame);
       
-      // Touch controls
-      document.getElementById('touchLeft').addEventListener('touchstart', function() {
-        touchLeft = true;
+      // Mobile controls
+      document.getElementById('leftBtn').addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        leftPressed = true;
       });
-      document.getElementById('touchLeft').addEventListener('touchend', function() {
-        touchLeft = false;
+      document.getElementById('leftBtn').addEventListener('touchend', function(e) {
+        e.preventDefault();
+        leftPressed = false;
       });
-      document.getElementById('touchRight').addEventListener('touchstart', function() {
-        touchRight = true;
+      document.getElementById('leftBtn').addEventListener('touchcancel', function(e) {
+        e.preventDefault();
+        leftPressed = false;
       });
-      document.getElementById('touchRight').addEventListener('touchend', function() {
-        touchRight = false;
+      
+      document.getElementById('rightBtn').addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        rightPressed = true;
+      });
+      document.getElementById('rightBtn').addEventListener('touchend', function(e) {
+        e.preventDefault();
+        rightPressed = false;
+      });
+      document.getElementById('rightBtn').addEventListener('touchcancel', function(e) {
+        e.preventDefault();
+        rightPressed = false;
       });
     }
 
@@ -498,9 +534,9 @@
         this.height = 40;
         this.velocity = 0;
         this.gravity = 0.1;
-        this.jumpForce = 9;
+        this.jumpForce = 8;
         this.facingRight = true;
-        this.maxVelocity = 9; // Decreased from 10 to 9
+        this.maxVelocity = 10; // Decreased from 10 to 9
       }
       draw() {
         push();
@@ -519,9 +555,9 @@
         if (this.x + this.width < 0) this.x = width;
         if (this.x > width) this.x = -this.width;
         
-        // Update facing direction based on touch or keyboard
-        if (keyIsDown(LEFT_ARROW) || touchLeft) this.facingRight = false;
-        if (keyIsDown(RIGHT_ARROW) || touchRight) this.facingRight = true;
+        // Update facing direction based on keyboard or touch
+        if (keyIsDown(LEFT_ARROW) || leftPressed) this.facingRight = false;
+        if (keyIsDown(RIGHT_ARROW) || rightPressed) this.facingRight = true;
         
         this.velocity += this.gravity;
         
@@ -534,11 +570,11 @@
         
         this.y += this.velocity;
         
-        // Horizontal movement (touch or keyboard)
-        if (keyIsDown(LEFT_ARROW) || touchLeft) {
+        // Horizontal movement (keyboard or touch)
+        if (keyIsDown(LEFT_ARROW) || leftPressed) {
           this.x -= 6;
         }
-        if (keyIsDown(RIGHT_ARROW) || touchRight) {
+        if (keyIsDown(RIGHT_ARROW) || rightPressed) {
           this.x += 6;
         }
         
