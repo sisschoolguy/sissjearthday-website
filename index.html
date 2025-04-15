@@ -40,10 +40,6 @@
       align-items: center;
       transition: all 0.5s ease; 
       z-index: 1000;
-      background-image: url('https://sissjearthday.tiiny.site/image_2025-04-11_191011304.png');
-      background-size: 40%; /* Reduced from 60% for desktop */
-      background-position: center;
-      background-repeat: no-repeat;
     }
     .popup-content { 
       text-align: center; 
@@ -51,6 +47,11 @@
       width: 100%;
       padding: 20px;
       background-color: transparent;
+    }
+    .popup-image {
+      width: 150px; /* Made about 3x smaller (original was ~450px) */
+      height: auto;
+      margin-bottom: 20px;
     }
     .popup h1 {
       font-size: 2.5rem; 
@@ -98,7 +99,7 @@
       transform: translateX(-50%) scale(1.1);
     }
 
-    /* Minimized Top Navigation Bar - Compact with adjusted arrow */
+    /* Minimized top navigation bar - Compact with adjusted arrow */
     .navbar {
       position: fixed; 
       top: -100px; 
@@ -487,14 +488,34 @@
       margin-top: 20px;
     }
 
+    /* Desktop-specific styles for games layout */
+    @media (min-width: 769px) {
+      .games-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+      }
+      
+      .game-wrapper {
+        flex: 1;
+        min-width: 300px;
+        max-width: 500px;
+        margin: 10px;
+      }
+      
+      .game-rules {
+        flex: 1;
+        min-width: 300px;
+        max-width: 500px;
+        margin: 10px;
+      }
+    }
+
     /* Mobile-specific styles */
     @media (max-width: 768px) {
       body {
         font-size: 16px;
-      }
-      
-      .popup {
-        background-size: 80%; /* Keep mobile size the same */
       }
       
       .popup h1 {
@@ -561,10 +582,6 @@
     }
 
     @media (max-width: 480px) {
-      .popup {
-        background-size: 90%; /* Keep mobile size the same */
-      }
-      
       .popup h1 {
         font-size: 1.8rem;
       }
@@ -626,6 +643,7 @@
   <!-- Full-screen pop-up -->
   <div id="popup" class="popup">
     <div class="popup-content">
+      <img src="https://sissjearthday.tiiny.site/image_2025-04-11_191011304.png" alt="Earth Day" class="popup-image">
       <h1>Earth Day</h1>
       <p>made by SIS South Jakarta</p>
       <div class="buttons">
