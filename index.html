@@ -49,7 +49,7 @@
       background-color: transparent;
     }
     .popup-image {
-      width: 150px; /* Made about 3x smaller (original was ~450px) */
+      width: 12%; /* More than 3x smaller than original 40% */
       height: auto;
       margin-bottom: 20px;
     }
@@ -99,7 +99,7 @@
       transform: translateX(-50%) scale(1.1);
     }
 
-    /* Minimized top navigation bar - Compact with adjusted arrow */
+    /* Minimized Top Navigation Bar - Compact with adjusted arrow */
     .navbar {
       position: fixed; 
       top: -100px; 
@@ -490,25 +490,22 @@
 
     /* Desktop-specific styles for games layout */
     @media (min-width: 769px) {
-      .games-container {
+      .games-row {
+        display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
         justify-content: center;
         align-items: flex-start;
+        gap: 40px;
+        width: 100%;
+        max-width: 1200px;
       }
       
-      .game-wrapper {
-        flex: 1;
-        min-width: 300px;
+      .game-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         max-width: 500px;
-        margin: 10px;
-      }
-      
-      .game-rules {
         flex: 1;
-        min-width: 300px;
-        max-width: 500px;
-        margin: 10px;
       }
     }
 
@@ -516,6 +513,10 @@
     @media (max-width: 768px) {
       body {
         font-size: 16px;
+      }
+      
+      .popup-image {
+        width: 50%; /* Larger on mobile */
       }
       
       .popup h1 {
@@ -582,6 +583,10 @@
     }
 
     @media (max-width: 480px) {
+      .popup-image {
+        width: 60%; /* Larger on smaller mobile */
+      }
+      
       .popup h1 {
         font-size: 1.8rem;
       }
@@ -643,7 +648,7 @@
   <!-- Full-screen pop-up -->
   <div id="popup" class="popup">
     <div class="popup-content">
-      <img src="https://sissjearthday.tiiny.site/image_2025-04-11_191011304.png" alt="Earth Day" class="popup-image">
+      <img src="https://sissjearthday.tiiny.site/image_2025-04-11_191011304.png" class="popup-image" alt="Earth Day Logo">
       <h1>Earth Day</h1>
       <p>made by SIS South Jakarta</p>
       <div class="buttons">
@@ -699,69 +704,75 @@
   <section id="games" class="section">
     <h2>Games</h2>
     <div class="games-container">
-      <!-- Earth Defender Game (Left side) -->
-      <div class="game-wrapper">
-        <h3>Earth Defender</h3>
-        <div id="gameContainer2" class="game-container">
-          <!-- Earth Defender Game Elements -->
-          <div id="earthDefenderRulesPopup">
-            <h2>EARTH DEFENDER</h2>
-            <p><strong>How to Play:</strong></p>
-            <p>1. Protect Earth from <span style="color:#e74c3c">red harmful words</span></p>
-            <p>2. Collect <span style="color:#2ecc71">green helpful words</span> to heal</p>
-            <p>3. Move mouse to aim | <strong>Click</strong> to shoot (uses 1 bullet)</p>
-            <p>4. Start with 15 bullets (max 21). Get +5 from green words</p>
-            <button id="earthDefenderStartBtn">START</button>
+      <div class="games-row">
+        <!-- Earth Defender Game Column -->
+        <div class="game-column">
+          <div class="game-wrapper">
+            <h3>Earth Defender</h3>
+            <div id="gameContainer2" class="game-container">
+              <!-- Earth Defender Game Elements -->
+              <div id="earthDefenderRulesPopup">
+                <h2>EARTH DEFENDER</h2>
+                <p><strong>How to Play:</strong></p>
+                <p>1. Protect Earth from <span style="color:#e74c3c">red harmful words</span></p>
+                <p>2. Collect <span style="color:#2ecc71">green helpful words</span> to heal</p>
+                <p>3. Move mouse to aim | <strong>Click</strong> to shoot (uses 1 bullet)</p>
+                <p>4. Start with 15 bullets (max 21). Get +5 from green words</p>
+                <button id="earthDefenderStartBtn">START</button>
+              </div>
+              <div id="earthDefenderAmmoDisplay" style="display:none">
+                Bullets: <span id="earthDefenderAmmoValue">15</span>/21
+              </div>
+              <div id="earthDefenderHealthText" style="display:none">
+                Earth Health: <span id="earthDefenderHealthValue">100</span>
+              </div>
+              <div id="earthDefenderHealthBar" style="display:none">
+                <div id="earthDefenderHealthFill"></div>
+              </div>
+              <div id="earthDefenderGameOver">
+                GAME OVER<br>
+                <button id="earthDefenderRestartBtn">Restart</button>
+              </div>
+              <canvas id="earthDefenderCanvas"></canvas>
+            </div>
+            <button class="fullscreen-btn" data-game="2">Full Screen</button>
           </div>
-          <div id="earthDefenderAmmoDisplay" style="display:none">
-            Bullets: <span id="earthDefenderAmmoValue">15</span>/21
-          </div>
-          <div id="earthDefenderHealthText" style="display:none">
-            Earth Health: <span id="earthDefenderHealthValue">100</span>
-          </div>
-          <div id="earthDefenderHealthBar" style="display:none">
-            <div id="earthDefenderHealthFill"></div>
-          </div>
-          <div id="earthDefenderGameOver">
-            GAME OVER<br>
-            <button id="earthDefenderRestartBtn">Restart</button>
-          </div>
-          <canvas id="earthDefenderCanvas"></canvas>
-        </div>
-        <button class="fullscreen-btn" data-game="2">Full Screen</button>
-      </div>
-      <!-- Game Rules Panel (Right side, plain text) -->
-      <div class="game-rules">
-        This retro-inspired game challenges you to defend the planet from harmful influences. By shooting incoming threats and collecting helpful words, you actively contribute to preserving Earth's vitality. The gameplay reflects Earth Day's message by emphasizing the importance of environmental stewardship. Every shot and every saved word reminds you that even small efforts matter in protecting our world.
-      </div>
-      
-      <!-- Squirrel Climber Game -->
-      <div class="game-wrapper">
-        <h3>Squirrel Climber</h3>
-        <div id="squirrelGameContainer">
-          <div id="squirrelGameInstructions">
-            <h2>Squirrel Climber</h2>
-            <p>Use left/right arrows or touch controls to move.</p>
-            <p>Avoid the carbon emissions and don't fall.</p>
-            <p>Climb the tree into space!</p>
-            <button id="startSquirrelGameBtn">Start Game</button>
-          </div>
-          <div id="squirrelDeathScreen">
-            <h2>Game Over!</h2>
-            <p id="squirrelFinalScore">You climbed to height: 0</p>
-            <p>Better luck next time!</p>
-            <button id="restartSquirrelGameBtn">Play Again</button>
-          </div>
-          <div id="squirrelMobileControls">
-            <div class="squirrel-mobile-btn" id="squirrelLeftBtn">←</div>
-            <div class="squirrel-mobile-btn" id="squirrelRightBtn">→</div>
+          <!-- Game Rules Panel -->
+          <div class="game-rules">
+            This retro-inspired game challenges you to defend the planet from harmful influences. By shooting incoming threats and collecting helpful words, you actively contribute to preserving Earth's vitality. The gameplay reflects Earth Day's message by emphasizing the importance of environmental stewardship. Every shot and every saved word reminds you that even small efforts matter in protecting our world.
           </div>
         </div>
-        <button class="fullscreen-btn" data-game="squirrel">Full Screen</button>
-      </div>
-      <!-- Game Rules Panel for Squirrel Climber -->
-      <div class="game-rules">
-        A game about a squirrel climbing a tree to space to escape rising carbon emissions cleverly ties into Earth Day by using playful storytelling to highlight the serious issue of climate change. As the squirrel ascends to avoid the toxic effects of pollution, players are reminded of the urgent need to protect our environment and reduce carbon emissions.
+        
+        <!-- Squirrel Climber Game Column -->
+        <div class="game-column">
+          <div class="game-wrapper">
+            <h3>Squirrel Climber</h3>
+            <div id="squirrelGameContainer">
+              <div id="squirrelGameInstructions">
+                <h2>Squirrel Climber</h2>
+                <p>Use left/right arrows or touch controls to move.</p>
+                <p>Avoid the carbon emissions and don't fall.</p>
+                <p>Climb the tree into space!</p>
+                <button id="startSquirrelGameBtn">Start Game</button>
+              </div>
+              <div id="squirrelDeathScreen">
+                <h2>Game Over!</h2>
+                <p id="squirrelFinalScore">You climbed to height: 0</p>
+                <p>Better luck next time!</p>
+                <button id="restartSquirrelGameBtn">Play Again</button>
+              </div>
+              <div id="squirrelMobileControls">
+                <div class="squirrel-mobile-btn" id="squirrelLeftBtn">←</div>
+                <div class="squirrel-mobile-btn" id="squirrelRightBtn">→</div>
+              </div>
+            </div>
+            <button class="fullscreen-btn" data-game="squirrel">Full Screen</button>
+          </div>
+          <!-- Game Rules Panel for Squirrel Climber -->
+          <div class="game-rules">
+            A game about a squirrel climbing a tree to space to escape rising carbon emissions cleverly ties into Earth Day by using playful storytelling to highlight the serious issue of climate change. As the squirrel ascends to avoid the toxic effects of pollution, players are reminded of the urgent need to protect our environment and reduce carbon emissions.
+          </div>
+        </div>
       </div>
     </div>
   </section>
